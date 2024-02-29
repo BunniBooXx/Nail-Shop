@@ -1,0 +1,36 @@
+.about-us-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    background-color: #FFC0CB; /* Strawberry pink or light pink */
+}
+
+.image-container {
+    flex: 1;
+    text-align: center;
+}
+
+.cute-image {
+    width: 600px; /* Adjust size as needed */
+    border-radius: 50%; /* Circular shape */
+}
+
+.text-container {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Example of cute and elegant font */
+    font-size: 24px;
+    color: #333; /* Black color */
+    text-align: center;
+}
+
+.description {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Example of cute and elegant font */
+    font-size: 16px;
+    color: #666; /* Dark gray color */
+    text-align: justify;
+}
