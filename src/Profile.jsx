@@ -1,168 +1,236 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Profile.css';
+import { useAuth } from './useAuth';
 
 const Profile = () => {
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('US');
-    const [zipCode, setZipCode] = useState('');
+  const { userId } = useAuth(); // Retrieve userId from the authentication context
+  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar_image, setAvatar] = useState('');
+  const [message, setMessage] = useState('');
 
-    const [creditCardNumber, setCreditCardNumber] = useState('');
-    const [expirationDate, setExpirationDate] = useState('');
-    const [cvc, setCvc] = useState('');
-    const [creditCardZipCode, setCreditCardZipCode] = useState('');
-
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/user/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+          },
+        });
+        console.log('Response status:', response.status);
+        const data = await response.json();
+        console.log('Data:', data);
+        if (response.ok) {
+          setUser(data);
+          setUsername(data.username);
+          setEmail(data.email);
+          setAvatar(data.avatar_image);
+        } else {
+          console.error('Failed to fetch user details:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
     };
+  
+    fetchUser();
+  }, [userId]);
+  
 
-    const handleCityChange = (e) => {
-        setCity(e.target.value);
-    };
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
 
-    const handleStateChange = (e) => {
-        setState(e.target.value);
-    };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
-    const handleCountryChange = (e) => {
-        setCountry(e.target.value);
-    };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-    const handleZipCodeChange = (e) => {
-        setZipCode(e.target.value);
-    };
+  const handleAvatarChange = (e) => {
+    setAvatar(e.target.value);
+  };
 
-    const handleCreditCardNumberChange = (e) => {
-        setCreditCardNumber(e.target.value);
-    };
+  const updateUser = async (updateType) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/${updateType}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ 
+          [updateType]: updateType === 'avatar' ? avatar_image : updateType === 'username' ? username : updateType === 'password' ? password : email 
+        }),
+      });
+      const data = await response.json();
+      console.log('Response:', data);
+      if (response.ok) {
+        setMessage(`Successfully updated ${updateType}`);
+      } else {
+        setMessage(`Failed to update ${updateType}`);
+      }
+    } catch (error) {
+      console.error('Error in updating:', error);
+      setMessage(`Error in updating ${updateType}`);
+    }
+  };
 
-    const handleExpirationDateChange = (e) => {
-        setExpirationDate(e.target.value);
-    };
+  const updateUsername = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/username`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ username }),
+      });
+      const data = await response.json();
+      console.log('Response:', data);
+      if (response.ok) {
+        setMessage('Username updated successfully');
+      } else {
+        setMessage('Failed to update username');
+      }
+    } catch (error) {
+      console.error('Error in updating username:', error);
+      setMessage('Error in updating username');
+    }
+  };
 
-    const handleCvcChange = (e) => {
-        setCvc(e.target.value);
-    };
+  const updatePassword = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ password }),
+      });
+      const data = await response.json();
+      console.log('Response:', data);
+      if (response.ok) {
+        setMessage('Password updated successfully');
+      } else {
+        setMessage('Failed to update password');
+      }
+    } catch (error) {
+      console.error('Error in updating password:', error);
+      setMessage('Error in updating password');
+    }
+  };
 
-    const handleCreditCardZipCodeChange = (e) => {
-        setCreditCardZipCode(e.target.value);
-    };
+  const updateEmail = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/email`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      console.log('Response:', data);
+      if (response.ok) {
+        setMessage('Email updated successfully');
+      } else {
+        setMessage('Failed to update email');
+      }
+    } catch (error) {
+      console.error('Error in updating email:', error);
+      setMessage('Error in updating email');
+    }
+  };
 
-    const saveAddress = () => {
-        // Code to save address
-        console.log('Address saved:', address, city, state, country, zipCode);
-    };
+  const updateAvatar = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/avatar`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ avatar_image }),
+      });
+      const data = await response.json();
+      console.log('Response:', data);
+      if (response.ok) {
+        setMessage('Avatar updated successfully');
+      } else {
+        setMessage('Failed to update avatar');
+      }
+    } catch (error) {
+      console.error('Error in updating avatar:', error);
+      setMessage('Error in updating avatar');
+    }
+  };
 
-    const saveCreditCard = () => {
-        // Code to save credit card using Stripe
-        console.log('Credit card saved:', creditCardNumber, expirationDate, cvc, creditCardZipCode);
-    };
+  if (!user) return <div>Loading...</div>;
 
-    return (
-        <div className="profile-container">
-            <div className="avatar-section">
-                <h2 className="section-title">Choose Your Avatar</h2>
-                <div className="avatar-selection">
-                <a href="#" className="avatar-link">
-                    <img src="./blue_eye_avatar.png" alt="Avatar 1" className="avatar" />
-                    </a>
-                <a href="#" className="avatar-link"> 
-                    <img src="./blonde_heart_avatar.png" alt="Avatar 2" className="avatar" />
+  return (
+    <div className="profile-container">
+      <div className="avatar-section">
+        <h2 className="section-title">Choose Your Avatar</h2>
+        <div className="avatar-selection">
+        <a href="#" className="avatar-link"> 
+                        <img src="./blonde_heart_avatar.png" alt="Avatar 2" className="avatar" />
                     </a>
                     <a href="#" className="avatar-link">
-                    <img src="./brown_avatar.png" alt="Avatar 3" className="avatar" />
+                        <img src="./brown_avatar.png" alt="Avatar 3" className="avatar" />
                     </a>
                     <a href="#" className="avatar-link">
-                    <img src="./green_eye_avatar.jpg" alt="Avatar 4" className="avatar" />
+                        <img src="./purple-hair.png" alt="Avatar 7" className="avatar" />
                     </a>
                     <a href="#" className="avatar-link">
-                    <img src="./black_avatar.png" alt="Avatar 5" className="avatar" />
+                        <img src="./green_eye_avatar.jpg" alt="Avatar 4" className="avatar" />
                     </a>
                     <a href="#" className="avatar-link">
-                    <img src="./red_avatar.png" alt="Avatar 6" className="avatar" />
+                        <img src="./pink-tan.png" alt="Avatar 7" className="avatar" />
                     </a>
                     <a href="#" className="avatar-link">
-                    <img src="./blonde_avatar.png" alt="Avatar 7" className="avatar" />
+                        <img src="./black_avatar.png" alt="Avatar 5" className="avatar" />
                     </a>
-                    {/* Add avatar images here */}
-                </div>
-            </div>
-            <div className="address-section">
-                <h2 className="section-title">Address Information</h2>
-                <div className="address-form">
-                    <input
-                        type="text"
-                        placeholder="Enter your address"
-                        value={address}
-                        onChange={handleAddressChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="City"
-                        value={city}
-                        onChange={handleCityChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="State"
-                        value={state}
-                        onChange={handleStateChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Country"
-                        value={country}
-                        onChange={handleCountryChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Zip Code"
-                        value={zipCode}
-                        onChange={handleZipCodeChange}
-                    />
-                    <button onClick={saveAddress}>Save Address</button>
-                </div>
-                {address && (
-                    <div className="address-actions">
-                        <button>Edit Address</button>
-                        <button>Delete Address</button>
-                    </div>
-                )}
-            </div>
-            <div className="credit-card-section">
-                <h2 className="section-title">Credit Card Information</h2>
-                <div className="credit-card-form">
-                    <input
-                        type="text"
-                        placeholder="Credit Card Number"
-                        value={creditCardNumber}
-                        onChange={handleCreditCardNumberChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Expiration Date"
-                        value={expirationDate}
-                        onChange={handleExpirationDateChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="CVC"
-                        value={cvc}
-                        onChange={handleCvcChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Zip Code"
-                        value={creditCardZipCode}
-                        onChange={handleCreditCardZipCodeChange}
-                    />
-                    <button onClick={saveCreditCard}>Save Credit Card</button>
-                </div>
-            </div>
+                    <a href="#" className="avatar-link">
+                        <img src="./red_avatar.png" alt="Avatar 6" className="avatar" />
+                    </a>
+                    <a href="#" className="avatar-link">
+                        <img src="./blonde_avatar.png" alt="Avatar 7" className="avatar" />
+                    </a>
+          {/* Avatar options */}
         </div>
-    );
+        <button onClick={updateAvatar} className="button">Save Avatar</button>
+      </div>
+
+      <div className="personal-info-section">
+        <h2 className="section-title">Personal Information</h2>
+        <div className="personal-info-form">
+          <input type="text" placeholder="Username" value={username} onChange={handleUsernameChange} />
+          <button onClick={updateUsername} className="button">Update Username</button>
+          <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+          <button onClick={updatePassword} className="button">Update Password</button>
+          <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} />
+          <button onClick={updateEmail} className="button">Update Email</button>
+        </div>
+      </div>
+
+      {message && <div className="message">{message}</div>}
+    </div>
+  );
 }
 
 export default Profile;

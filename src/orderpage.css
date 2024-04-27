@@ -1,0 +1,74 @@
+@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+
+
+.order-container {
+    max-width: 400px;
+    height:450px;
+    margin: auto;
+    background-color: #FFB0C1;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .order-header {
+    text-align: center;
+    color: #fdf8fb;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .order-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    color: #f5f0f3;
+    font-weight: bold;
+  }
+  
+  .input-container {
+    position: relative;
+  }
+  
+  .input-container input[type='text'] {
+    padding: 10px;
+    border: 1px solid #ff66cc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .small-input {
+    width: 90px;
+  }
+  
+  .margin-right {
+    margin-right: 10px;
+  }
+  
+  .message-container {
+    margin-top: 10px;
+    color: grey;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    text-align: right;
+    color: white;
+  }
+
+  .autocomplete-container {
+    position: relative;
+    background: no-repeat;
+    max-height:50px;
+}
+  
+.background {
+    height:600px;
+}

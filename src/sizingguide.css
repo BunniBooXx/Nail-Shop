@@ -16,6 +16,7 @@
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    
 }
 
 .sizing-guide-heading {
@@ -35,8 +36,9 @@
 .finger,
 .measurement {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #fa47b0;
     text-align: center;
+    
 }
 
 .size-heading {
@@ -48,3 +50,32 @@
     color: #ff69b4; /* Pink color for finger names */
 }
 
+
+.sizing-guide-table:hover {
+    font-weight: bold;
+    color:rgb(249, 247, 253);
+    background-color:black;
+}
+
+.sizing-guide-table {
+    margin: 0 auto;
+    font-weight:bold;
+    border:2px solid black;
+}
+
+.sizing-guide-note {
+    color: palevioletred;
+    border: solid black 3px;
+    padding: 10px;
+    font-weight:bold;
+}
+
+.sizing-guide-note:hover{
+    color:white;
+    background-color: black;
+}
+
+.sizing-guide-heading{
+    color: palevioletred;
+    font-weight:bold;
+}

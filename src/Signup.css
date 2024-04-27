@@ -1,68 +1,75 @@
 .background-signup {
-    margin: 0;
-    padding: 0;
-    background-image: url('./images/chibi_laptop.png');
-    background-size: cover;
-    background-position: center;
-    height: 700px;
+  margin: 0;
+  padding: 0;
+  background-image: url('./images/chibi_laptop.png');
+  background-size: cover;
+  background-position: center;
+  height: 1300px;
 }
-  
-  .signup-container {
-    text-align: center;
-    margin-top: 50px;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .signup-title {
-    font-family: 'Comic Sans MS', cursive;
-    font-size: 32px;
-    color: #ff85a2;
-    margin-bottom: 30px;
-  }
-  
-  .signup-form {
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .input-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ff85a2;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
-  }
-  
-  button {
-    background-color: #ff85a2;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #ff6699;
-  }
-  
-  
+
+.signup-container {
+  text-align: center;
+  margin-top: 50px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.signup-title {
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 32px;
+  color: #ff85a2;
+  margin-bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form {
+  background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ff85a2;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+  margin-top: 5px; /* Adjust as needed */
+}
+
+button {
+  background-color: #ff85a2;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Adjust as needed */
+}
+
+button:hover {
+  background-color: #ff6699;
+}

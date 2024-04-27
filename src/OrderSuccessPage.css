@@ -1,0 +1,32 @@
+/* OrderSuccessPage.css */
+
+.order-success-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+    background-color: #ffe6ff; /* Light pink */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-success-title {
+    font-size: 24px;
+    color: #ff69b4; /* Pink */
+    margin-bottom: 20px;
+  }
+  
+  .order-details {
+    margin-bottom: 20px;
+  }
+  
+  .order-details p {
+    margin-bottom: 10px;
+  }
+  
+  .order-success-message {
+    font-size: 16px;
+    color: #666; /* Dark gray */
+  }
+  
+  

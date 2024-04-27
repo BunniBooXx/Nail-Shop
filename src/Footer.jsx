@@ -14,13 +14,13 @@ export default function Footer() {
             </nav>
             <nav>
                 <div className="grid grid-flow-col gap-4">
-                    <Link to="https://www.youtube.com"><FaYoutube size={24} /></Link>
-                    <Link to="https://www.tiktok.com"><FaTiktok size={24} /></Link>
-                    <Link to="https://www.instagram.com"><FaInstagram size={24} /></Link>
+                    <Link to="https://www.youtube.com/@bunnybubblenails"><FaYoutube size={24} /></Link>
+                    <Link to="https://www.tiktok.com/@bunnybubblenails"><FaTiktok size={24} /></Link>
+                    <Link to="https://www.instagram.com/bunnybubblenails/"><FaInstagram size={24} /></Link>
                 </div>
             </nav>
             <aside>
-                <p>Copyright © 2024 - All right reserved by Jaqueline Smith</p>
+                <p>Copyright © 2024 - All right reserved by Bunny Bubble Nails </p>
             </aside>
         </footer>
     );

@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { FaYoutube, FaInstagram, FaEnvelope, FaPhone } from 'react-icons/fa';
 import './Contact.css'; // Import the new stylesheet
-import TikTokIcon from './TikTok.jsx'; // Import the TikTok SVG icon
 import { FaMusic } from 'react-icons/fa';
 
 const Contact = () => {
@@ -53,19 +52,20 @@ const Contact = () => {
           <FaEnvelope className="contact-icon" />
           <p>bunnybubblenails@gmail.com</p>
         </div>
+        <br/>
         <div className="contact-item">
           <FaPhone className="contact-icon" /> 
           <p>+1-347-530-3644</p>
         </div>
         <br/>
         <div className="social-icons">
-          <a href="https://www.youtube.com/user/example" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.youtube.com/@bunnybubblenails" target="_blank" rel="noopener noreferrer">
             <FaYoutube className="social-icon" />
           </a>
-          <a href="https://www.instagram.com/example/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/bunnybubblenails/" target="_blank" rel="noopener noreferrer">
             <FaInstagram className="social-icon" />
           </a>
-          <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.tiktok.com/@bunnybubblenails" target="_blank" rel="noopener noreferrer">
             <FaMusic className="social-icon"/>
           </a>
         </div>
