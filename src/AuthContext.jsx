@@ -23,7 +23,8 @@ const AuthProvider = ({ children }) => {
       const data = await response.json();
       console.log('Data:', data);
       if (response.ok) {
-        setUserId(data.user_id);
+        setUserId(data.userId);
+        console.log('UserId:', userId)
       } else {
         console.error('Failed to fetch userId:', data.message);
       }
@@ -34,13 +35,14 @@ const AuthProvider = ({ children }) => {
   
   
   useEffect(() => {
-    if (userId !== null) {
-      fetchUserId();
+    if (userId == null) {
+     fetchUserId();
     }
   }, [userId]);
   
   const login = (id) => {
     setUserId(id);
+    console.log('id:', id)
     localStorage.setItem('userId', JSON.stringify(id));
   };
 

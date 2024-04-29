@@ -12,6 +12,7 @@ const Profile = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    if (userId) { 
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -39,7 +40,9 @@ const Profile = () => {
     };
   
     fetchUser();
+  }
   }, [userId]);
+    
   
 
   const handleUsernameChange = (e) => {

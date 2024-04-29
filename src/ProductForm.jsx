@@ -43,7 +43,11 @@ const ProductForm = () => {
     formData.append('image', image);
 
     try {
-      const response = await axios.post('http://localhost:5000/product/create', formData);
+      const response = await axios.post('http://localhost:5000/product/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (!response.data.success) {
         throw new Error(response.data.error || 'Failed to create product');
@@ -129,4 +133,5 @@ const ProductForm = () => {
 };
 
 export default ProductForm;
+
 

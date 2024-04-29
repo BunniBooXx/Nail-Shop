@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 const Product = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1); // Quantity state
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,9 +27,31 @@ const Product = () => {
     }
   }, [productId]);
 
-  const handleAddToCart = () => {
-    // Implement logic to add product to cart
-    console.log('Product added to cart:', product);
+  const handleAddToCart = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:5000/cart/add_to_cart', {
+        product_id: productId,
+        quantity: quantity
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.data.message) {
+        console.log('Product added to cart successfully');
+        // Optionally, you can redirect the user to the cart page
+      } else {
+        console.error('Failed to add product to cart:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+
+  const handleQuantityChange = (e) => {
+    setQuantity(parseInt(e.target.value));
   };
 
   if (!product) {
@@ -49,32 +72,16 @@ const Product = () => {
       <div className="price">
         <p>${price}</p>
       </div>
-      <div className="options">
-        <h2>Size Options:</h2>
-        <label>
-          <input type="radio" name="size" value="XS" />
-          XS
-        </label>
-        <label>
-          <input type="radio" name="size" value="Small" />
-          Small
-        </label>
-        <label>
-          <input type="radio" name="size" value="Medium" />
-          Medium
-        </label>
-        <label>
-          <input type="checkbox" name="custom" />
-          Custom Size
-        </label>
-      </div>
-      <div className="custom-sizes">
-        <h3>Custom Nail Sizes:</h3>
-        <input type="text" placeholder="Thumb: (mm)" />
-        <input type="text" placeholder="Index: (mm)" />
-        <input type="text" placeholder="Middle: (mm)" />
-        <input type="text" placeholder="Ring: (mm)" />
-        <input type="text" placeholder="Pinky: (mm)" />
+      <div className="quantity">
+        <label htmlFor="quantity">Quantity:</label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          min="1"
+          value={quantity}
+          onChange={handleQuantityChange}
+        />
       </div>
       <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
     </div>
@@ -82,6 +89,8 @@ const Product = () => {
 };
 
 export default Product;
+
+
 
 
 
