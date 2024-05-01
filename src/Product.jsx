@@ -35,7 +35,7 @@ const Product = () => {
         quantity: quantity
       }, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
           'Content-Type': 'application/json'
         }
       });

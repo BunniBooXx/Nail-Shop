@@ -8,24 +8,34 @@ const CartPage = () => {
     const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
-        fetchCartItems();
+        fetchCart();
     }, []);
 
-    const fetchCartItems = async () => {
+    const fetchCart = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/cart/read'); // Fetch cart items for the logged-in user
-            if (response.data.items) {
+            const token = localStorage.getItem('token'); // Assuming you store your JWT token in localStorage
+            const response = await axios.get('http://localhost:5000/cart/read', {
+                headers: {
+                    Authorization: token
+                }
+            });
+            if (response.data.cart_id) {
                 setCartItems(response.data.items);
                 setTotalPrice(response.data.total_price);
             }
         } catch (error) {
-            console.error('Error fetching cart items:', error);
+            console.error('Error fetching cart:', error);
         }
     };
 
     const handleClearCart = async () => {
         try {
-            await axios.delete('http://localhost:5000/cart/delete_all_items'); // Clear cart items for the logged-in user
+            const token = localStorage.getItem('token');
+            await axios.delete('http://localhost:5000/cart/delete_all_items', {
+                headers: {
+                    Authorization: token
+                }
+            });
             setCartItems([]);
             setTotalPrice(0);
         } catch (error) {
@@ -35,8 +45,13 @@ const CartPage = () => {
 
     const handleDeleteItem = async (itemId) => {
         try {
-            await axios.delete(`http://localhost:5000/cart/delete_item/${itemId}`); // Delete a cart item for the logged-in user
-            const updatedCartItems = cartItems.filter(item => item.cart_item_id !== itemId);
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:5000/cart/delete_item/${itemId}`, {
+                headers: {
+                    Authorization: token
+                }
+            });
+            const updatedCartItems = cartItems.filter(item => item.product_id !== itemId);
             setCartItems(updatedCartItems);
             const updatedTotalPrice = updatedCartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
             setTotalPrice(updatedTotalPrice);
@@ -47,9 +62,14 @@ const CartPage = () => {
 
     const handleQuantityChange = async (itemId, quantity) => {
         try {
-            await axios.put(`http://localhost:5000/cart/update/${itemId}`, { quantity }); // Update quantity of a cart item for the logged-in user
+            const token = localStorage.getItem('token');
+            await axios.put(`http://localhost:5000/cart/update/${itemId}`, { quantity }, {
+                headers: {
+                    Authorization: token
+                }
+            });
             const updatedCartItems = cartItems.map(item => {
-                if (item.cart_item_id === itemId) {
+                if (item.product_id === itemId) {
                     return { ...item, quantity };
                 }
                 return item;
@@ -66,7 +86,7 @@ const CartPage = () => {
         <div className="cart-page-container">
             <h2 className="cart-title">Your Shopping Cart</h2>
             {cartItems.map(item => (
-                <div key={item.cart_item_id} className="cart-item">
+                <div key={item.product_id} className="cart-item">
                     <div className="item-details">
                         <p className="item-name">{item.name}</p>
                         <p className="item-price">${item.price}</p>
@@ -76,10 +96,10 @@ const CartPage = () => {
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={(e) => handleQuantityChange(item.cart_item_id, parseInt(e.target.value))}
+                            onChange={(e) => handleQuantityChange(item.product_id, parseInt(e.target.value))}
                             className="quantity-input"
                         />
-                        <button className="delete-button" onClick={() => handleDeleteItem(item.cart_item_id)}>Delete</button>
+                        <button className="delete-button" onClick={() => handleDeleteItem(item.product_id)}>Delete</button>
                     </div>
                 </div>
             ))}
@@ -96,3 +116,5 @@ const CartPage = () => {
 }
 
 export default CartPage;
+
+
