@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { useAuth } from './useAuth';
+import axios from 'axios';
 
 const Navbar = () => {
   const { userId, logout } = useAuth();
+  const [cartData, setCartData] = useState({ items: [], total_price: 0 });
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming you store your JWT token in localStorage
+      const response = await axios.get('http://localhost:5000/cart/read', {
+        headers: {
+          Authorization: token
+        }
+      });
+      setCartData(response.data);
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  };
 
   // Function to get the avatar image URL based on the user's selected avatar
   const getAvatarImageUrl = () => {
@@ -44,7 +64,6 @@ const Navbar = () => {
               <li><button onClick={logout}>Logout</button></li>
             ) : (
               <>
-                <li><button onClick={logout}>Logout</button></li>
                 <li><Link to="/login">Login</Link></li>
                 <li><Link to="/signup">Signup</Link></li>
               </>
@@ -59,8 +78,8 @@ const Navbar = () => {
           </div>
           <div className="absolute mt-3 z-50 card card-compact dropdown-content w-52 bg-base-100 shadow">
             <div className="card-body">
-              <span className="font-bold text-lg">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
+              <span className="font-bold text-lg">{cartData.items.length} Items</span>
+              <span className="text-info">Subtotal: ${cartData.total_price}</span>
               <div className="card-actions">
                 <Link to="/cart" className="btn btn-primary btn-block">View cart</Link>
               </div>

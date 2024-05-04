@@ -13,9 +13,10 @@ const CartPage = () => {
 
     const fetchCart = async () => {
         try {
-            const token = localStorage.getItem('token'); // Assuming you store your JWT token in localStorage
+            const token = localStorage.getItem('token');
             const response = await axios.get('http://localhost:5000/cart/read', {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: token
                 }
             });
@@ -33,6 +34,7 @@ const CartPage = () => {
             const token = localStorage.getItem('token');
             await axios.delete('http://localhost:5000/cart/delete_all_items', {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: token
                 }
             });
@@ -48,6 +50,7 @@ const CartPage = () => {
             const token = localStorage.getItem('token');
             await axios.delete(`http://localhost:5000/cart/delete_item/${itemId}`, {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: token
                 }
             });
@@ -63,8 +66,9 @@ const CartPage = () => {
     const handleQuantityChange = async (itemId, quantity) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:5000/cart/update/${itemId}`, { quantity }, {
+            await axios.put(`http://localhost:5000/cart/update`, { itemId, quantity }, {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: token
                 }
             });
@@ -82,9 +86,39 @@ const CartPage = () => {
         }
     };
 
+    const handleDeleteSingleItem = async (itemId) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('User not authenticated');
+            }
+            await axios.delete(`http://localhost:5000/cart/delete_item/${itemId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token
+                }
+            });
+            // Remove the item from the cartItems array only if it exists
+            const updatedCartItems = cartItems.filter(item => item.product_id !== itemId);
+            if (updatedCartItems.length === cartItems.length) {
+                throw new Error('Cart item not found');
+            }
+            setCartItems(updatedCartItems);
+            const updatedTotalPrice = updatedCartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            setTotalPrice(updatedTotalPrice);
+        } catch (error) {
+            console.error('Error deleting single item from cart:', error);
+        }
+    };
+    
+    
+
+ 
+
     return (
         <div className="cart-page-container">
             <h2 className="cart-title">Your Shopping Cart</h2>
+            <button className="clear-cart-button" onClick={handleClearCart}>Clear Cart</button>
             {cartItems.map(item => (
                 <div key={item.product_id} className="cart-item">
                     <div className="item-details">
@@ -99,16 +133,18 @@ const CartPage = () => {
                             onChange={(e) => handleQuantityChange(item.product_id, parseInt(e.target.value))}
                             className="quantity-input"
                         />
-                        <button className="delete-button" onClick={() => handleDeleteItem(item.product_id)}>Delete</button>
+                        <button className="delete-button" onClick={() => handleDeleteSingleItem(item.product_id)}>🗑️</button>
                     </div>
                 </div>
             ))}
             <div className="cart-actions">
-                <button className="clear-cart-button" onClick={handleClearCart}>Clear Cart</button>
                 <p className="total-price">Total: ${totalPrice}</p>
             </div>
+            <br/>
+            <br/>
             <Link to="/order"><button className="clear-cart-button">Order</button></Link>
-            
+            <br/>
+            <br/>
             {/* Message about creation and shipping */}
             <p className="shipping-info">Please note that creation and shipping may take 2+ weeks. You will be emailed the shipping link once your order is processed.</p>
         </div>
@@ -116,5 +152,6 @@ const CartPage = () => {
 }
 
 export default CartPage;
+
 
 
