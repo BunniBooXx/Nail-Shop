@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import { useAuth } from './useAuth';
+import { AuthContext } from './AuthContext';
 import axios from 'axios';
 import defaultAvatarImage from './images/default-avatar-image.jpg';
 
 const Navbar = () => {
-  const { userId, logout } = useAuth();
+  const { userId, logout } = useContext(AuthContext); // Using useContext to get userId
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
   const [avatarImage, setAvatarImage] = useState(defaultAvatarImage); // Avatar image state
 
   useEffect(() => {
     fetchCart();
-    fetchUserData();
-  }, []);
+    if (userId) { // Make sure userId is available
+      fetchUserData();
+    }
+  }, [userId]); // Adding userId to dependency array
 
   const fetchCart = async () => {
     try {
@@ -39,7 +41,8 @@ const Navbar = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        setAvatarImage(data.avatar_image || '/default-avatar-image.jpg');
+        const avatarImagPath = data.avatar_image ? `/${data.avatar_image}` : defaultAvatarImage;
+        setAvatarImage(avatarImagPath);
       } else {
         console.error('Failed to fetch user data:', data.message);
       }
@@ -97,7 +100,7 @@ const Navbar = () => {
             </li>
             <li><Link to="/sizing-guide">Sizing Guide</Link></li>
             {userId ? (
-              <li><button className="btn btn-ghost"onClick={logout}>Logout</button></li>
+              <li><button className="btn btn-ghost" onClick={logout}>Logout</button></li>
             ) : (
               <>
                 <li><Link to="/login">Login</Link></li>
@@ -127,6 +130,5 @@ const Navbar = () => {
   );
 }
 
-export default Navbar;
-
+export default Navbar; 
 
