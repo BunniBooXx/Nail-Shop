@@ -64,7 +64,7 @@ const Product = () => {
     <div className="product-container">
       <h1>{name}</h1>
       <div className="image-carousel">
-        <img src={image_url} alt={name} className="carousel-image" />
+      <img src={`http://localhost:5000/nails/${image_url}`} alt={name} />
       </div>
       <div className="description">
         <p>{description}</p>
