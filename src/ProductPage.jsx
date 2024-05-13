@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import './ProductPage.css';
 
 export default function ProductPage() {
+    const [product, setProduct] = useState({});
     const [selectedSize, setSelectedSize] = useState('');
     const [customMeasurements, setCustomMeasurements] = useState({
         leftHand: '',
         rightHand: ''
     });
+
+    const { productId } = useParams();
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/product/read/${productId}`)
+            .then(response => {
+                console.log('Product:', response.data.data);
+                setProduct(response.data.data || {});
+            })
+            .catch(error => {
+                console.error('Error fetching product:', error);
+            });
+    }, [productId]);
 
     const handleSizeChange = (size) => {
         setSelectedSize(size);
@@ -27,15 +43,13 @@ export default function ProductPage() {
     return (
         <div className="product-page-container">
             <div className="product-images-carousel">
-                {/* Implement your image carousel here */}
-                {/* Example: <Carousel images={product.images} /> */}
+                <img src={`http://localhost:5000/nails/${product.image_url}`} alt={product.name} />
             </div>
             <div className="product-details">
-                <h2 className="product-title">Product Name</h2>
-                <p className="product-price">$50</p>
+                <h2 className="product-title">{product.name}</h2>
+                <p className="product-price">${product.price}</p>
                 <p className="product-description">
-                    This product is 100% handmade. It takes 2-3 weeks processing time to make each order. 
-                    You will receive an email once it has been shipped with a tracking number.
+                    {product.description}
                 </p>
                 <div className="size-options">
                     <h3 className="size-title">Sizes:</h3>
