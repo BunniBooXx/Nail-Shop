@@ -3,7 +3,7 @@
 .cart-page-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 50px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,12 @@
   }
   
   .delete-button:hover {
-    background-color: #FCA3B7; /* Lighter shade of strawberry pink */
+    background-color: #FCA3B7; 
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;/* Lighter shade of strawberry pink */
   }
   
   .clear-cart-button {
@@ -74,7 +79,12 @@
   }
   
   .clear-cart-button:hover {
-    background-color: #FCA3B7; /* Lighter shade of strawberry pink */
+    background-color: black;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer; /* Lighter shade of strawberry pink */
   }
   
   .total-price {
@@ -90,3 +100,24 @@
     font-style: italic;
   }
   
+  .space {
+    padding: 80px;
+  }
+
+  .order-button {
+    background-color: #FCA3B7; /* Strawberry pink */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .order-button:hover {
+    background-color: black; /* Strawberry pink */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }

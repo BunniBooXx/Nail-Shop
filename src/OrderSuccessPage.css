@@ -5,14 +5,16 @@
     margin: 0 auto;
     padding: 40px;
     text-align: center;
-    background-color: #ffe6ff; /* Light pink */
+    background-color: #f7c4d6; /* Light pink */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 550px;
   }
   
   .order-success-title {
+    padding-top: 150px;
     font-size: 24px;
-    color: #ff69b4; /* Pink */
+    color: #ef69ac; /* Pink */
     margin-bottom: 20px;
   }
   

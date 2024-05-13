@@ -3,18 +3,21 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { useAuth } from './useAuth';
 import axios from 'axios';
+import defaultAvatarImage from './images/default-avatar-image.jpg';
 
 const Navbar = () => {
   const { userId, logout } = useAuth();
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
+  const [avatarImage, setAvatarImage] = useState(defaultAvatarImage); // Avatar image state
 
   useEffect(() => {
     fetchCart();
+    fetchUserData();
   }, []);
 
   const fetchCart = async () => {
     try {
-      const token = localStorage.getItem('token'); // Assuming you store your JWT token in localStorage
+      const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:5000/cart/read', {
         headers: {
           Authorization: token
@@ -26,17 +29,46 @@ const Navbar = () => {
     }
   };
 
-  // Function to get the avatar image URL based on the user's selected avatar
-  const getAvatarImageUrl = () => {
-    // Logic to determine the avatar image URL based on the user's selected avatar_image
-    // Replace the logic below with your implementation
-    if (userId) {
-      // If user is logged in and has selected an avatar, return the corresponding image URL
-      // Example: return `/avatars/${userId}.jpg`;
-      return '/avatar.jpg'; // Placeholder URL, replace with your logic
-    } else {
-      // If user is not logged in or hasn't selected an avatar, return default image URL
-      return '/logo.jpg'; // Placeholder URL, replace with your default avatar URL
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/${userId}`, {
+        headers: {
+          'Authorization': token,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setAvatarImage(data.avatar_image || '/default-avatar-image.jpg');
+      } else {
+        console.error('Failed to fetch user data:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  // Update avatar image
+  const updateAvatar = async (newAvatarImage) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/user/update/${userId}/avatar`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({ avatar_image: newAvatarImage }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setAvatarImage(newAvatarImage);
+        console.log('Avatar image updated successfully');
+      } else {
+        console.error('Failed to update avatar image:', data.message);
+      }
+    } catch (error) {
+      console.error('Error updating avatar image:', error);
     }
   };
 
@@ -49,7 +81,11 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img alt="User Avatar" src={getAvatarImageUrl()} /> {/* Dynamically set avatar image */}
+              {avatarImage ? (
+                <img alt="User Avatar" src={avatarImage} /> // Display avatar image
+              ) : (
+                <div>Loading...</div>
+              )}
             </div>
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 p-2 shadow bg-base-100 rounded-box w-52">
@@ -61,7 +97,7 @@ const Navbar = () => {
             </li>
             <li><Link to="/sizing-guide">Sizing Guide</Link></li>
             {userId ? (
-              <li><button onClick={logout}>Logout</button></li>
+              <li><button className="btn btn-ghost"onClick={logout}>Logout</button></li>
             ) : (
               <>
                 <li><Link to="/login">Login</Link></li>
@@ -81,7 +117,7 @@ const Navbar = () => {
               <span className="font-bold text-lg">{cartData.items.length} Items</span>
               <span className="text-info">Subtotal: ${cartData.total_price}</span>
               <div className="card-actions">
-                <Link to="/cart" className="btn btn-primary btn-block">View cart</Link>
+                <Link to="/cart" className="btn btn-primary-content">View cart</Link>
               </div>
             </div>
           </div>

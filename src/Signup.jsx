@@ -70,7 +70,7 @@ const Signup = () => {
             <input type="password" id="confirmPassword" name="confirmPassword" onChange={handleInputChange} value={formData.confirmPassword} />
           </div>
           {message && <div className="message">{message}</div>}
-          <button type="submit">Sign Up</button>
+          <button className="signup-button"type="submit">Sign Up</button>
         </form>
       </div>
     </div>

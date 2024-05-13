@@ -159,7 +159,7 @@ const Profile = () => {
     }
   };
 
-  const updateAvatar = async () => {
+  const updateAvatar = async (imagePath) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5000/user/update/${userId}/avatar`, {
@@ -168,7 +168,7 @@ const Profile = () => {
           'Content-Type': 'application/json',
           'Authorization': token,
         },
-        body: JSON.stringify({ avatar_image }),
+        body: JSON.stringify({ avatar_image: imagePath }),
       });
       const data = await response.json();
       console.log('Response:', data);
@@ -190,35 +190,58 @@ const Profile = () => {
       <div className="avatar-section">
         <h2 className="section-title">Choose Your Avatar</h2>
         <div className="avatar-selection">
-        <a href="#" className="avatar-link"> 
-                        <img src="./blonde_heart_avatar.png" alt="Avatar 2" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./brown_avatar.png" alt="Avatar 3" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./purple-hair.png" alt="Avatar 7" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./green_eye_avatar.jpg" alt="Avatar 4" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./pink-tan.png" alt="Avatar 7" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./black_avatar.png" alt="Avatar 5" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./red_avatar.png" alt="Avatar 6" className="avatar" />
-                    </a>
-                    <a href="#" className="avatar-link">
-                        <img src="./blonde_avatar.png" alt="Avatar 7" className="avatar" />
-                    </a>
-          {/* Avatar options */}
-        </div>
-        <button onClick={updateAvatar} className="button">Save Avatar</button>
-      </div>
+  <img
+    src="./blonde_heart_avatar.png"
+    alt="Avatar 2"
+    className="avatar"
+    onClick={() => updateAvatar("./blonde_heart_avatar.png")}
+  />
+  <img
+    src="./brown_avatar.png"
+    alt="Avatar 3"
+    className="avatar"
+    onClick={() => updateAvatar("./brown_avatar.png")}
+  />
+  <img
+    src="./purple-hair.png"
+    alt="Avatar 7"
+    className="avatar"
+    onClick={() => updateAvatar("./purple-hair.png")}
+  />
+  <img
+    src="./green_eye_avatar.jpg"
+    alt="Avatar 4"
+    className="avatar"
+    onClick={() => updateAvatar("./green_eye_avatar.jpg")}
+  />
+  <img
+    src="./pink-tan.png"
+    alt="Avatar 7"
+    className="avatar"
+    onClick={() => updateAvatar("./pink-tan.png")}
+  />
+  <img
+    src="./black_avatar.png"
+    alt="Avatar 5"
+    className="avatar"
+    onClick={() => updateAvatar("./black_avatar.png")}
+  />
+  <img
+    src="./red_avatar.png"
+    alt="Avatar 6"
+    className="avatar"
+    onClick={() => updateAvatar("./red_avatar.png")}
+  />
+  <img
+    src="./blonde_avatar.png"
+    alt="Avatar 7"
+    className="avatar"
+    onClick={() => updateAvatar("./blonde_avatar.png")}
+  />
+</div>
+<button onClick={updateAvatar} className="button">Save Avatar</button>
 
+</div>
       <div className="personal-info-section">
         <h2 className="section-title">Personal Information</h2>
         <div className="personal-info-form">

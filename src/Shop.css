@@ -6,9 +6,7 @@
     height:550px;
 }
 
-h1 {
-    color: #ff69b4;
-}
+
 
 .products {
     display: flex;
@@ -58,3 +56,8 @@ button:hover {
     background-color: #e48ba9;
     border-radius: 50% ;
 }
+
+.title {
+    margin-bottom: 20px;
+}
+

@@ -36,12 +36,14 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/order" element={<OrderPage />} />
+          <Route path="/order/:orderId" element={<OrderPage />} />
           <Route path="/productform" element={<ProductForm />} />
           <Route path="/ordersuccesspage" element={<OrderSuccessPage />} />
 
           {/* Route to render Product component for dynamic product routes */}
           <Route path="/product/read/:productId" element={<Product />} />
+          {/* Route to initiate Stripe Checkout */}
+          <Route path="/checkout/:orderId" element={<Checkout />} />
         </Routes>
         <Footer />
       </Router>
@@ -53,6 +55,34 @@ function App() {
 const ProfileWithUserId = () => {
   const { userId } = useAuth(); // Retrieve userId from the authentication context
   return <Profile userId={userId} />;
+};
+
+// Component to initiate Stripe Checkout
+const Checkout = () => {
+  const initiateCheckout = async () => {
+    try {
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          // Add product details if required
+        })
+      });
+
+      const session = await response.json();
+      window.location = session.url;
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
+  };
+
+  // Call the function to initiate the checkout process
+  initiateCheckout();
+
+  return null;
 };
 
 export default App;

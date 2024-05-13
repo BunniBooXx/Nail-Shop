@@ -58,18 +58,23 @@ select {
   margin-top: 5px; /* Adjust as needed */
 }
 
-button {
-  background-color: #ff85a2;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-  margin-top: 10px; /* Adjust as needed */
+
+
+.signup-button {
+    background-color: #FCA3B7; /* Strawberry pink */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-button:hover {
-  background-color: #ff6699;
+
+.signup-button:hover {
+  background-color: #FCA3B7; /* Strawberry pink */
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
