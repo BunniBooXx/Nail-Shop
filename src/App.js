@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import StripeCheckoutForm from './StripeCheckoutForm';
+import CheckoutFormComponent from './CheckoutFormComponent';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./useAuth";
+import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Home from "./Home";
@@ -18,62 +21,7 @@ import CartPage from "./CartPage";
 import OrderPage from "./OrderPage";
 import ProductForm from "./ProductForm";
 import OrderSuccessPage from "./OrderSuccessPage";
-
-const ProductDisplay = () => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-      .catch((error) => console.error("Error fetching products:", error));
-  }, []);
-
-  const handleCheckout = async (product) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ product }),
-      });
-
-      const session = await response.json();
-      if (response.ok) {
-        window.location.href = session.url;
-      } else {
-        console.error("Error creating checkout session:", session.error);
-      }
-    } catch (error) {
-      console.error("Error creating checkout session:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <section>
-      {products.map((product) => (
-        <div key={product.id} className="product">
-          <img src={product.imageUrl} alt={product.name} />
-          <div className="description">
-            <h3>{product.name}</h3>
-            <h5>${product.price}</h5>
-          </div>
-          <button
-            onClick={() => handleCheckout(product)}
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : "Checkout"}
-          </button>
-        </div>
-      ))}
-    </section>
-  );
-};
+import NailSizeOptions from "./NailSizeOptions";
 
 function App() {
   return (
@@ -81,6 +29,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route path="/nail-size-options" element={<NailSizeOptions />} />
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -89,6 +38,7 @@ function App() {
           <Route path="/sizing-guide" element={<SizingGuide />} />
           <Route path="/profile" element={<ProfileWithUserId />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/create-checkout-session/:orderId" element={<StripeCheckoutForm />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:orderId" element={<OrderPage />} />
@@ -109,29 +59,61 @@ const ProfileWithUserId = () => {
 };
 
 const Checkout = () => {
-  const initiateCheckout = async () => {
+  const { orderId } = useParams();
+  const [order, setOrder] = useState(null);
+
+  const initiateCheckout = useCallback(async () => {
     try {
-      const response = await fetch("/create-checkout-session", {
-        method: "POST",
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // Add product details if required
+          product: {
+            name: order.name,
+            price: order.price,
+          },
         }),
       });
 
       const session = await response.json();
-      window.location.href = session.url;
+      if (session.error) {
+        console.error('Error creating checkout session:', session.error);
+      } else {
+        window.location.href = session.url;
+      }
     } catch (error) {
-      console.error("Error:", error);
-      // Handle error
+      console.error('Error:', error);
     }
-  };
+  }, [order]);
 
-  initiateCheckout();
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const response = await fetch(`order/api/orders/${orderId}`);
+        const data = await response.json();
+        setOrder(data);
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      }
+    };
 
-  return null;
+    fetchOrder();
+  }, [orderId]);
+
+  useEffect(() => {
+    if (order) {
+      initiateCheckout();
+    }
+  }, [order, initiateCheckout]);
+
+  return order ? (
+    <StripeCheckoutForm
+      orderId={orderId}
+      order={order}
+    />
+  ) : null;
 };
 
 export default App;

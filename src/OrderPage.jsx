@@ -6,13 +6,18 @@ const OrderPage = () => {
   const { orderId } = useParams();
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
-  const addressRef = useRef(null);
+  const streetAddressRef = useRef(null);
+  const cityRef = useRef(null);
+  const countryRef = useRef(null);
+  const postalCodeRef = useRef(null);
 
-  
   const handleShippingInfo = async () => {
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
-    const address = addressRef.current.value;
+    const streetAddress = streetAddressRef.current.value;
+    const city = cityRef.current.value;
+    const country = countryRef.current.value;
+    const postalCode = postalCodeRef.current.value;
 
     if (!orderId) {
       console.error('Order ID is undefined');
@@ -32,7 +37,10 @@ const OrderPage = () => {
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
-          address: address
+          street_address: streetAddress,
+          city: city,
+          country: country,
+          postal_code: postalCode
         })
       });
 
@@ -59,8 +67,20 @@ const OrderPage = () => {
             <input id="lastName" ref={lastNameRef} type="text" />
           </div>
           <div className="form-group">
-            <label htmlFor="address">Address:</label>
-            <input id="address" ref={addressRef} type="text" placeholder="Street address, Apartment number, City, Postal code, Country" />
+            <label htmlFor="streetAddress">Street Address:</label>
+            <input id="streetAddress" ref={streetAddressRef} type="text" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="city">City:</label>
+            <input id="city" ref={cityRef} type="text" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="country">Country:</label>
+            <input id="country" ref={countryRef} type="text" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="postalCode">Postal Code:</label>
+            <input id="postalCode" ref={postalCodeRef} type="text" />
           </div>
         </div>
         <div className="button-container">

@@ -1,9 +1,9 @@
-@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+
 
 
 .order-container {
-    max-width: 400px;
-    height:450px;
+    max-width: 500px;
+    height:800px;
     margin: auto;
     background-color: #FFB0C1;
     padding: 20px;
@@ -70,5 +70,5 @@
 }
   
 .background {
-    height:600px;
+    height:800px;
 }

@@ -6,7 +6,10 @@ import { useParams } from 'react-router-dom';
 const Product = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1); // Quantity state
+  const [quantity, setQuantity] = useState(1);
+  const [nailSizeOption, setNailSizeOption] = useState('');
+  const [leftHandCustomSize, setLeftHandCustomSize] = useState('');
+  const [rightHandCustomSize, setRightHandCustomSize] = useState('');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -28,17 +31,28 @@ const Product = () => {
   }, [productId]);
 
   const handleAddToCart = async () => {
+    if (!nailSizeOption) {
+      alert('Please select a nail size option');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/cart/add_to_cart', {
+      const cartItem = {
         product_id: productId,
-        quantity: quantity
-      }, {
+        quantity,
+        nail_size_option_id: nailSizeOption,
+        left_hand_custom_size: leftHandCustomSize,
+        right_hand_custom_size: rightHandCustomSize,
+      };
+
+      const response = await axios.post('http://localhost:5000/cart/add_to_cart', cartItem, {
         headers: {
           Authorization: token,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
+
       if (response.data.message) {
         console.log('Product added to cart successfully');
         // Optionally, you can redirect the user to the cart page
@@ -46,12 +60,20 @@ const Product = () => {
         console.error('Failed to add product to cart:', response.data.error);
       }
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error('Error adding to cart:', error);
     }
   };
 
   const handleQuantityChange = (e) => {
     setQuantity(parseInt(e.target.value));
+  };
+
+  const handleLeftHandCustomSizeChange = (e) => {
+    setLeftHandCustomSize(e.target.value);
+  };
+
+  const handleRightHandCustomSizeChange = (e) => {
+    setRightHandCustomSize(e.target.value);
   };
 
   if (!product) {
@@ -64,7 +86,7 @@ const Product = () => {
     <div className="product-container">
       <h1>{name}</h1>
       <div className="image-carousel">
-      <img src={`http://localhost:5000/nails/${image_url}`} alt={name} />
+        <img src={`http://localhost:5000/nails/${image_url}`} alt={name} />
       </div>
       <div className="description">
         <p>{description}</p>
@@ -73,7 +95,7 @@ const Product = () => {
         <p>${price}</p>
       </div>
       <div className="quantity">
-        <label htmlFor="quantity">Quantity:</label>
+        <label htmlFor="quantity" className="quantity">Quantity:</label>
         <input
           type="number"
           id="quantity"
@@ -83,14 +105,44 @@ const Product = () => {
           onChange={handleQuantityChange}
         />
       </div>
-      <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
+      <label className="nailsizes">
+        Nail Size Option:
+        <select value={nailSizeOption} onChange={(e) => setNailSizeOption(e.target.value)}>
+          <option value="">Select an option</option>
+          <option value="1">XS</option>
+          <option value="2">M</option>
+          <option value="3">L</option>
+          <option value="4">Custom</option>
+        </select>
+      </label>
+
+      {nailSizeOption === '4' && (
+        <div>
+          <label>
+            Left Hand Custom Size:
+            <input
+              type="text"
+              value={leftHandCustomSize}
+              onChange={handleLeftHandCustomSizeChange}
+            />
+          </label>
+          <label>
+            Right Hand Custom Size:
+            <input
+              type="text"
+              value={rightHandCustomSize}
+              onChange={handleRightHandCustomSizeChange}
+            />
+          </label>
+        </div>
+      )}
+
+      <button className="add-to-cart-btn" onClick={handleAddToCart}>
+        Add to Cart
+      </button>
     </div>
   );
 };
 
 export default Product;
-
-
-
-
 

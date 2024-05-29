@@ -239,7 +239,6 @@ const Profile = () => {
     onClick={() => updateAvatar("./blonde_avatar.png")}
   />
 </div>
-<button onClick={updateAvatar} className="button">Save Avatar</button>
 
 </div>
       <div className="personal-info-section">
