@@ -91,7 +91,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`order/api/orders/${orderId}`);
+        const response = await fetch(`order/read/${orderId}`);
         const data = await response.json();
         setOrder(data);
       } catch (error) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
-const CheckoutFormComponent = ({ clientSecret, createCheckoutSession, totalPrice }) => {
+const CheckoutFormComponent = ({ clientSecret, createCheckoutSession, totalPrice, cartItems }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [paymentError, setPaymentError] = useState(null);
@@ -14,7 +14,7 @@ const CheckoutFormComponent = ({ clientSecret, createCheckoutSession, totalPrice
       return;
     }
 
-    if (!clientSecret) {
+    if (!clientSecret & cartItems.length > 0) {
       await createCheckoutSession();
     }
 

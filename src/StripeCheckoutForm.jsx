@@ -1,25 +1,34 @@
-import React from 'react';
-import { useParams } from'react-router-dom';
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { useParams } from 'react-router-dom';
 import CheckoutFormComponent from './CheckoutFormComponent';
 
+const stripePromise = loadStripe(
+  'pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU'
+);
+
 const StripeCheckoutForm = ({ orderId, order }) => {
-  const cartItems = order.order_items || []; // Assuming order.order_items contains the cart items
-  const totalPrice = order.total_amount || 0; // Assuming order.total_amount contains the total price
+  const [orderItems, setOrderItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (order) {
+      setOrderItems(order.order_items || []);
+      setTotalPrice(order.total_amount || 0);
+    }
+  }, [order]);
 
   return (
-    <CheckoutFormComponent
-      orderId={orderId}
-      cartItems={cartItems}
-      totalPrice={totalPrice}
-    />
+    <Elements stripe={stripePromise}>
+      <CheckoutFormComponent
+        orderId={orderId}
+        cartItems={orderItems}
+        totalPrice={totalPrice}
+      />
+    </Elements>
   );
 };
-
-export default StripeCheckoutForm;
 
 const Checkout = () => {
   const { orderId } = useParams();
@@ -28,13 +37,9 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/api/orders/${orderId}`);
+        const response = await fetch(`/order/read/${orderId}`);
         const data = await response.json();
-        // Assuming the API response has the correct structure
-        setOrder({
-          order_items: data.order_items,
-          // Add any other required properties here
-        });
+        setOrder(data);
       } catch (error) {
         console.error('Error fetching order:', error);
       }
@@ -43,42 +48,11 @@ const Checkout = () => {
     fetchOrder();
   }, [orderId]);
 
-  const initiateCheckout = useCallback(async () => {
-    try {
-      const response = await fetch('/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          product: {
-            name: order.name,
-            price: order.price,
-          },
-        }),
-      });
-
-      const session = await response.json();
-      if (session.error) {
-        console.error('Error creating checkout session:', session.error);
-      } else {
-        window.location.href = session.url;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }, [order]);
-
-  useEffect(() => {
-    if (order) {
-      initiateCheckout();
-    }
-  }, [order, initiateCheckout]);
-
   return order ? (
-    <StripeCheckoutForm
-      orderId={orderId}
-      order={order}
-    />
-  ) : null;
+    <StripeCheckoutForm orderId={orderId} order={order} />
+  ) : (
+    <div>Loading...</div>
+  );
 };
+
+export default Checkout;
