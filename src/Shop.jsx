@@ -9,7 +9,7 @@ function Product({ product}) {
 
   return (
     <div className="product" key={product.id}>
-      <img src={`http://localhost:5000/${product.image_url}`} alt={product.name} />
+      <img src={`${product.image_url}`} alt={product.name} />
       <br />
       <h2>{product.name}</h2>
       <p>ID: {product.id}</p>

@@ -37,7 +37,13 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/order/read/${orderId}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/order/read/${orderId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }});
         const data = await response.json();
         setOrder(data);
       } catch (error) {

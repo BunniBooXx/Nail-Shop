@@ -8,6 +8,7 @@ const OrderPage = () => {
   const lastNameRef = useRef(null);
   const streetAddressRef = useRef(null);
   const cityRef = useRef(null);
+  const stateRef = useRef(null);
   const countryRef = useRef(null);
   const postalCodeRef = useRef(null);
 
@@ -16,6 +17,7 @@ const OrderPage = () => {
     const lastName = lastNameRef.current.value;
     const streetAddress = streetAddressRef.current.value;
     const city = cityRef.current.value;
+    const state = stateRef.current.value;
     const country = countryRef.current.value;
     const postalCode = postalCodeRef.current.value;
 
@@ -39,6 +41,7 @@ const OrderPage = () => {
           last_name: lastName,
           street_address: streetAddress,
           city: city,
+          state: state,
           country: country,
           postal_code: postalCode
         })
@@ -73,6 +76,10 @@ const OrderPage = () => {
           <div className="form-group">
             <label htmlFor="city">City:</label>
             <input id="city" ref={cityRef} type="text" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="city">State:</label>
+            <input id="city" ref={stateRef} type="text" />
           </div>
           <div className="form-group">
             <label htmlFor="country">Country:</label>

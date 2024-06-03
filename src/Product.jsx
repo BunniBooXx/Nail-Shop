@@ -10,6 +10,7 @@ const Product = () => {
   const [nailSizeOption, setNailSizeOption] = useState('');
   const [leftHandCustomSize, setLeftHandCustomSize] = useState('');
   const [rightHandCustomSize, setRightHandCustomSize] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -28,9 +29,19 @@ const Product = () => {
     if (productId) {
       fetchProduct();
     }
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
   }, [productId]);
 
   const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      alert('Please log in or sign up to add items to your cart.');
+      return;
+    }
+
     if (!nailSizeOption) {
       alert('Please select a nail size option');
       return;
@@ -140,9 +151,12 @@ const Product = () => {
       <button className="add-to-cart-btn" onClick={handleAddToCart}>
         Add to Cart
       </button>
+      
+      <div>
+        <p>Don't see your size? Check out our <a href="/sizing-guide" className="size-link">Size Guide</a>.</p>
+      </div>
     </div>
   );
 };
 
 export default Product;
-

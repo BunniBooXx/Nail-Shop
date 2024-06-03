@@ -64,17 +64,13 @@ const Checkout = () => {
 
   const initiateCheckout = useCallback(async () => {
     try {
-      const response = await fetch('/create-checkout-session', {
+      const response = await fetch('http://localhost:5000/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          product: {
-            name: order.name,
-            price: order.price,
-          },
-        }),
+        body: JSON.stringify({order_id: orderId}),
+
       });
 
       const session = await response.json();
@@ -91,7 +87,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`order/read/${orderId}`);
+        const response = await fetch(`http://localhost:5000/order/read/${orderId}`);
         const data = await response.json();
         setOrder(data);
       } catch (error) {
