@@ -91,7 +91,7 @@ const OrderPage = () => {
           </div>
         </div>
         <div className="button-container">
-          <Link to={`/create-checkout-session/${orderId}`}>
+          //<Link to={`create-checkout-session/${orderId}`}>
             <button className="submit-btn" onClick={handleShippingInfo}>
               Continue to Checkout
             </button>

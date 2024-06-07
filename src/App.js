@@ -60,7 +60,8 @@ const ProfileWithUserId = () => {
 
 const Checkout = () => {
   const { orderId } = useParams();
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState(null); 
+  const token = localStorage.getItem('token');
 
   const initiateCheckout = useCallback(async () => {
     try {
@@ -68,6 +69,7 @@ const Checkout = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token
         },
         body: JSON.stringify({order_id: orderId}),
 
@@ -87,7 +89,13 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/order/read/${orderId}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/order/read/${orderId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          } 
+        });
         const data = await response.json();
         setOrder(data);
       } catch (error) {
@@ -96,7 +104,7 @@ const Checkout = () => {
     };
 
     fetchOrder();
-  }, [orderId]);
+  }, [orderId, token]);
 
   useEffect(() => {
     if (order) {

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import CheckoutFormComponent from './CheckoutFormComponent';
 
 const stripePromise = loadStripe(
-  'pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU'
+  'STRIPE_PUBLISHABLE_KEY'
 );
 
 const StripeCheckoutForm = ({ orderId, order }) => {
@@ -30,35 +30,4 @@ const StripeCheckoutForm = ({ orderId, order }) => {
   );
 };
 
-const Checkout = () => {
-  const { orderId } = useParams();
-  const [order, setOrder] = useState(null);
-
-  useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/order/read/${orderId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }});
-        const data = await response.json();
-        setOrder(data);
-      } catch (error) {
-        console.error('Error fetching order:', error);
-      }
-    };
-
-    fetchOrder();
-  }, [orderId]);
-
-  return order ? (
-    <StripeCheckoutForm orderId={orderId} order={order} />
-  ) : (
-    <div>Loading...</div>
-  );
-};
-
-export default Checkout;
+export default StripeCheckoutForm;
