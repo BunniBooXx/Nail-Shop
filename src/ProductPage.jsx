@@ -28,13 +28,12 @@ export default function ProductPage() {
         setSelectedSize(size);
     };
 
-    const handleCustomMeasurementsChange = (event, hand) => {
-        const { value } = event.target;
-        setCustomMeasurements(prevState => ({
-            ...prevState,
-            [hand]: value
+    const handleCustomMeasurementsChange = (e, field) => {
+        setCustomMeasurements((prevState) => ({
+          ...prevState,
+          [field]: e.target.value,
         }));
-    };
+      };
 
     const handleAddToCart = () => {
         // Handle adding product to cart
