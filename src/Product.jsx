@@ -3,6 +3,8 @@ import axios from 'axios';
 import './Product.css';
 import { useParams } from 'react-router-dom';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL; 
+
 const Product = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -15,7 +17,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/product/read/${productId}`);
+        const response = await axios.get(`${backendUrl}/product/read/${productId}`);
         if (response.data.success) {
           setProduct(response.data.data);
         } else {
@@ -57,7 +59,7 @@ const Product = () => {
         right_hand_custom_size: rightHandCustomSize,
       };
 
-      const response = await axios.post('http://localhost:5000/cart/add_to_cart', cartItem, {
+      const response = await axios.post(`${backendUrl}/cart/add_to_cart`, cartItem, {
         headers: {
           Authorization: token,
           'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ const Product = () => {
     <div className="product-container">
       <h1>{name}</h1>
       <div className="image-carousel">
-        <img src={`http://localhost:5000/nails/${image_url}`} alt={name} />
+        <img src={`${product.image_url}`} alt={name} />
       </div>
       <div className="description">
         <p>{description}</p>

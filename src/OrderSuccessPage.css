@@ -1,34 +1,36 @@
-/* OrderSuccessPage.css */
+/* App.css (or any other CSS file you are using in your React app) */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
 
-.order-success-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    text-align: center;
-    background-color: #f7c4d6; /* Light pink */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 550px;
-  }
-  
-  .order-success-title {
-    padding-top: 150px;
-    font-size: 24px;
-    color: #ef69ac; /* Pink */
-    margin-bottom: 20px;
-  }
-  
-  .order-details {
-    margin-bottom: 20px;
-  }
-  
-  .order-details p {
-    margin-bottom: 10px;
-  }
-  
-  .order-success-message {
-    font-size: 16px;
-    color: #666; /* Dark gray */
-  }
-  
+.order-success {
+  background-color: #facbcb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.order-success h1 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.order-success p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.loading {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
+}
+
   

@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useParams } from 'react-router-dom';
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
-const stripePromise = loadStripe('STRIPE_PUBLISHABLE_KEY');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-const StripeCheckoutForm = ({ orderId, order }) => {
-  const [orderItems, setOrderItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+const StripeCheckoutForm = ({ orderId }) => {
+  const [order, setOrder] = useState(null);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    if (order) {
-      setOrderItems(order.order_items || []);
-      setTotalPrice(order.total_amount || 0);
+    const fetchOrder = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        });
+        setOrder(response.data);
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      }
+    };
+
+    if (orderId) {
+      fetchOrder();
     }
-  }, [order]);
+  }, [orderId, backendUrl]);
 
   const handlePaymentSuccess = async (paymentIntentId) => {
     try {
-      const response = await axios.post('/api/orders/finalize-order', { orderId });
+      const response = await axios.post(`${backendUrl}/finalize-order`, { orderId });
 
       if (response.data.success) {
         console.log('Order finalized successfully');
-        // Optionally, you can redirect the user to a success page or display a success message
+        // Redirect to success page or show success message
       } else {
         console.error('Error finalizing order');
       }
@@ -37,8 +50,7 @@ const StripeCheckoutForm = ({ orderId, order }) => {
     <Elements stripe={stripePromise}>
       <CheckoutFormComponent
         orderId={orderId}
-        cartItems={orderItems}
-        totalPrice={totalPrice}
+        order={order}
         onPaymentSuccess={handlePaymentSuccess}
       />
     </Elements>

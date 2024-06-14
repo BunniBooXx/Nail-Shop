@@ -3,6 +3,8 @@ import 'daisyui/dist/full.css';
 import axios from 'axios'; // Import Axios
 import './ProductForm.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const ProductForm = () => {
   const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
@@ -43,7 +45,7 @@ const ProductForm = () => {
     formData.append('image', image);
 
     try {
-      const response = await axios.post('http://localhost:5000/product/create', formData, {
+      const response = await axios.post(`${backendUrl}/product/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

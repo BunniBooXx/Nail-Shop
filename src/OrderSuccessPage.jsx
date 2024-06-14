@@ -1,40 +1,47 @@
-// OrderSuccessPage.jsx
-
 import React, { useEffect, useState } from 'react';
-import './OrderSuccessPage.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './OrderSuccessPage.css';
 
 const OrderSuccessPage = () => {
   const { orderId } = useParams();
-  const [orderDetails, setOrderDetails] = useState(null);
+  const [order, setOrder] = useState(null);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const stripeApiKey = process.env.REACT_APP_STRIPE_KEY;
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`http://localhost:5000/order/details/${orderId}`);
-        setOrderDetails(response.data);
+        const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+            'Stripe-Key': stripeApiKey
+          }
+        });
+        setOrder(response.data);
       } catch (error) {
         console.error('Error fetching order details:', error);
       }
     };
 
-    fetchOrderDetails();
-  }, [orderId]);
+    if (orderId) {
+      fetchOrderDetails();
+    }
+  }, [orderId, backendUrl]);
 
   return (
-    <div className="order-success-container">
-      <h2 className="order-success-title">Thank You for Your Order!</h2>
-      {orderDetails && (
-        <div className="order-details">
-          <p><strong>Order ID:</strong> {orderDetails.order_id}</p>
-          <p><strong>Total Amount:</strong> ${orderDetails.total_amount}</p>
-          <p><strong>Status:</strong> {orderDetails.status}</p>
-          <p><strong>Estimated Delivery:</strong> {orderDetails.estimated_delivery}</p>
-          {/* Add more order details as needed */}
+    <div>
+      {order ? (
+        <div>
+          <h1>Order Success</h1>
+          <p>Your order with ID {order.order_id} has been successfully placed.</p>
+          <p>Total Amount: ${Number((order.total_amount / 100).toFixed(2))}</p>
         </div>
+      ) : (
+        <p>Loading order details...</p>
       )}
-      <p className="order-success-message">Your order is being processed. You will receive a confirmation email shortly. Thank you for shopping with us!</p>
     </div>
   );
 };

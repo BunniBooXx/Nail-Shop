@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './CartPage.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -14,7 +16,7 @@ const CartPage = () => {
     const fetchCart = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/cart/read', {
+            const response = await axios.get(`${backendUrl}/cart/read`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: token
@@ -32,7 +34,7 @@ const CartPage = () => {
     const handleClearCart = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete('http://localhost:5000/cart/delete_all_items', {
+            await axios.delete(`${backendUrl}/cart/delete_all_items`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: token
@@ -48,7 +50,7 @@ const CartPage = () => {
     const handleQuantityChange = async (itemId, quantity) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:5000/cart/update`, { itemId, quantity }, {
+            await axios.put(`${backendUrl}/cart/update`, { itemId, quantity }, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: token
@@ -74,7 +76,7 @@ const CartPage = () => {
             if (!token) {
                 throw new Error('User not authenticated');
             }
-            await axios.delete(`http://localhost:5000/cart/delete_item/${itemId}`, {
+            await axios.delete(`${backendUrl}/cart/delete_item/${itemId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: token
@@ -95,7 +97,7 @@ const CartPage = () => {
     const handleCreatePreliminaryOrder = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:5000/order/create_preliminary_order', {
+            const response = await axios.post(`${backendUrl}/order/create_preliminary_order`, {
                 total_amount: totalPrice
             }, {
                 headers: {

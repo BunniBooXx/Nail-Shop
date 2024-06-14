@@ -5,6 +5,8 @@ import { AuthContext } from './AuthContext';
 import axios from 'axios';
 import defaultAvatarImage from './images/default-avatar-image.jpg';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Navbar = () => {
   const { userId, logout } = useContext(AuthContext); // Using useContext to get userId
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
@@ -20,7 +22,7 @@ const Navbar = () => {
   const fetchCart = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/cart/read', {
+      const response = await axios.get(`${backendUrl}/cart/read`, {
         headers: {
           Authorization: token
         }
@@ -34,7 +36,7 @@ const Navbar = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/${userId}`, {
+      const response = await fetch(`${backendUrl}/user/${userId}`, {
         headers: {
           'Authorization': token,
         },
@@ -55,7 +57,7 @@ const Navbar = () => {
   const updateAvatar = async (newAvatarImage) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/avatar`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/avatar`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

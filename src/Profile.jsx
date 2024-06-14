@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { useAuth } from './useAuth';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Profile = () => {
   const { userId } = useAuth(); // Retrieve userId from the authentication context
   const [user, setUser] = useState(null);
@@ -16,7 +18,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/user/${userId}`, {
+        const response = await fetch(`${backendUrl}/user/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +66,7 @@ const Profile = () => {
   const updateUser = async (updateType) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/${updateType}`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/${updateType}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ const Profile = () => {
   const updateUsername = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/username`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/username`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ const Profile = () => {
   const updatePassword = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/password`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +140,7 @@ const Profile = () => {
   const updateEmail = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/email`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/email`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -162,7 +164,7 @@ const Profile = () => {
   const updateAvatar = async (imagePath) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/update/${userId}/avatar`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/avatar`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

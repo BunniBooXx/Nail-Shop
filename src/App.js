@@ -23,6 +23,8 @@ import ProductForm from "./ProductForm";
 import OrderSuccessPage from "./OrderSuccessPage";
 import NailSizeOptions from "./NailSizeOptions";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 function App() {
   return (
     <AuthProvider>
@@ -43,7 +45,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:orderId" element={<OrderPage />} />
           <Route path="/productform" element={<ProductForm />} />
-          <Route path="/ordersuccesspage" element={<OrderSuccessPage />} />
+          <Route path="/checkoutformcomponent" element={<CheckoutFormComponent />} />
+          <Route path="/ordersuccesspage/:orderId" element={<OrderSuccessPage />} />
           <Route path="/product/read/:productId" element={<Product />} />
           <Route path="/checkout/:orderId" element={<Checkout />} />
         </Routes>
@@ -65,7 +68,7 @@ const Checkout = () => {
 
   const initiateCheckout = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5000/create-checkout-session', {
+      const response = await fetch(`${backendUrl}/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +93,7 @@ const Checkout = () => {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/order/read/${orderId}`, {
+        const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token

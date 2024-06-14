@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Shop.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 function Product({ product}) {
 
 
@@ -25,7 +27,7 @@ function Shop() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/product/read_all')
+    axios.get(`${backendUrl}/product/read_all`)
       .then(response => {
         console.log('Products:', response.data.data);
         setProducts(response.data.data || []);

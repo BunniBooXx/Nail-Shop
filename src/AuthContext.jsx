@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -16,7 +18,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/user/logout`, {
+      const response = await fetch(`${backendUrl}/user/logout`, {
         method: 'DELETE',
         headers: {
           Authorization: token
@@ -40,7 +42,7 @@ const AuthProvider = ({ children }) => {
     const fetchUserId = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/user', {
+        const response = await fetch(`${backendUrl}/user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

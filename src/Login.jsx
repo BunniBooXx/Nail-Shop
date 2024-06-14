@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,7 +24,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/user/login`, {
+      const response = await fetch(`${backendUrl}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

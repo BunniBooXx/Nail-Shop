@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './orderpage.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+
 const OrderPage = () => {
   const { orderId } = useParams();
   const firstNameRef = useRef(null);
@@ -30,7 +33,7 @@ const OrderPage = () => {
 
     try {
       // Update order with user information
-      const updateOrderResponse = await fetch(`http://localhost:5000/order/update_order_with_user_info/${orderId}`, {
+      const updateOrderResponse = await fetch(`${backendUrl}/order/update_order_with_user_info/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

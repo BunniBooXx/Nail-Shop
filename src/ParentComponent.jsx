@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom'; // Import the useParams hook
 import Product from './Product'; // Import the Product component
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const ParentComponent = () => {
   const { productId } = useParams(); // Get the productId from route parameters
 
@@ -17,7 +19,7 @@ const ParentComponent = () => {
             return;
           }
       
-          const response = await axios.get(`http://localhost:5000/product/read/${productId}`);
+          const response = await axios.get(`${backendUrl}/product/read/${productId}`);
           if (!response.data.success) {
             throw new Error(response.data.error || 'Failed to fetch product data');
           }

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './Signup.css';
 
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -22,7 +25,7 @@ const Signup = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/user/signup`, {
+      const response = await fetch(`${backendUrl}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

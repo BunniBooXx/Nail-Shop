@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './ProductPage.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 export default function ProductPage() {
     const [product, setProduct] = useState({});
     const [selectedSize, setSelectedSize] = useState('');
@@ -14,7 +16,7 @@ export default function ProductPage() {
     const { productId } = useParams();
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/product/read/${productId}`)
+        axios.get(`${backendUrl}/product/read/${productId}`)
             .then(response => {
                 console.log('Product:', response.data.data);
                 setProduct(response.data.data || {});
@@ -42,7 +44,7 @@ export default function ProductPage() {
     return (
         <div className="product-page-container">
             <div className="product-images-carousel">
-                <img src={`http://localhost:5000/nails/${product.image_url}`} alt={product.name} />
+                <img src={`${product.image_url}`} alt={product.name} />
             </div>
             <div className="product-details">
                 <h2 className="product-title">{product.name}</h2>
