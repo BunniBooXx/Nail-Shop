@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
+
+
+
 const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [paymentError, setPaymentError] = useState(null);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleSubmit = async (event) => {
@@ -41,6 +45,11 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
           setPaymentError(confirmError.message);
         } else {
           onPaymentSuccess(paymentIntent.id);
+
+          if (paymentIntent && paymentIntent.status === 'succeeded') {
+            setPaymentSuccess(true);
+            handlePaymentSuccess(paymentIntent); // Call the new function here
+          }
         }
       }
     } catch (error) {
@@ -49,10 +58,33 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
     }
   };
 
+  const handlePaymentSuccess = async (paymentIntent) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${backendUrl}/send-emails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token, // Include the user's authentication token
+        },
+        body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send emails');
+      }
+
+      console.log('Emails sent successfully');
+    } catch (error) {
+      console.error('Error sending emails:', error);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <CardElement />
       {paymentError && <div>{paymentError}</div>}
+      {paymentSuccess && <div>Payment successful! Emails have been sent.</div>}
       <button type="submit" disabled={!stripe}>
         Pay
       </button>
@@ -61,4 +93,3 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
 };
 
 export default CheckoutFormComponent;
-

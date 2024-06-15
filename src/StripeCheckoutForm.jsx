@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromises = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
+
+
+
+
+console.log(stripePromises);
+
+console.log('Stripe Publishable Key:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
 
 const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
@@ -31,23 +40,31 @@ const StripeCheckoutForm = ({ orderId }) => {
     }
   }, [orderId, backendUrl]);
 
-  const handlePaymentSuccess = async (paymentIntentId) => {
+  const handlePaymentSuccess = async (paymentIntent) => {
     try {
-      const response = await axios.post(`${backendUrl}/finalize-order`, { orderId });
-
-      if (response.data.success) {
-        console.log('Order finalized successfully');
-        // Redirect to success page or show success message
-      } else {
-        console.error('Error finalizing order');
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${backendUrl}/send-emails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token, // Include the user's authentication token
+        },
+        body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send emails');
       }
+  
+      console.log('Emails sent successfully');
     } catch (error) {
-      console.error('Error finalizing order:', error);
+      console.error('Error sending emails:', error);
     }
   };
+  
 
   return (
-    <Elements stripe={stripePromise}>
+    <Elements stripe={stripePromises}>
       <CheckoutFormComponent
         orderId={orderId}
         order={order}
