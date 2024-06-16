@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
 const stripePromises = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
-
-
-
 
 console.log(stripePromises);
 
@@ -43,25 +39,26 @@ const StripeCheckoutForm = ({ orderId }) => {
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/send-emails`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token, // Include the user's authentication token
-        },
-        body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
-      });
-  
-      if (!response.ok) {
+      const response = await axios.post(
+        `${backendUrl}/send-emails/${orderId}`, // Use orderId instead of order_id
+        { orderId: paymentIntent.metadata.orderId },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token, // Include the user's authentication token
+          },
+        }
+      );
+
+      if (response.status !== 200) {
         throw new Error('Failed to send emails');
       }
-  
+
       console.log('Emails sent successfully');
     } catch (error) {
       console.error('Error sending emails:', error);
     }
   };
-  
 
   return (
     <Elements stripe={stripePromises}>

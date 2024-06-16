@@ -12,6 +12,10 @@ export default function Footer() {
                 <Link to="/devinfo" className="link link-hover">Dev Info</Link>
                 <Link to="/sizing-guide" className="link link-hover">Sizing Guide</Link>
             </nav>
+            <nav className="grid grid-flow-col gap-2">
+                <Link to="/privacy-policy" className="link link-hover">Privacy Policy</Link>
+                <Link to="/terms-of-service" className="link link-hover">Terms Of Service</Link>
+            </nav>
             <nav>
                 <div className="grid grid-flow-col gap-4">
                     <Link to="https://www.youtube.com/@bunnybubblenails"><FaYoutube size={24} /></Link>

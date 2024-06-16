@@ -22,6 +22,9 @@ import OrderPage from "./OrderPage";
 import ProductForm from "./ProductForm";
 import OrderSuccessPage from "./OrderSuccessPage";
 import NailSizeOptions from "./NailSizeOptions";
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsOfService from './TermsOfService';
+
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -49,6 +52,8 @@ function App() {
           <Route path="/ordersuccesspage/:orderId" element={<OrderSuccessPage />} />
           <Route path="/product/read/:productId" element={<Product />} />
           <Route path="/checkout/:orderId" element={<Checkout />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
+          <Route path="/terms-of-service" element={<TermsOfService/>} />
         </Routes>
         <Footer />
       </Router>
@@ -87,7 +92,7 @@ const Checkout = () => {
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [order]);
+  }, [orderId, token]);
 
   useEffect(() => {
     const fetchOrder = async () => {
