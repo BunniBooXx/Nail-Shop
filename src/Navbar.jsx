@@ -8,16 +8,16 @@ import defaultAvatarImage from './images/default-avatar-image.jpg';
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Navbar = () => {
-  const { userId, logout } = useContext(AuthContext); // Using useContext to get userId
+  const { userId, logout } = useContext(AuthContext);
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
-  const [avatarImage, setAvatarImage] = useState(defaultAvatarImage); // Avatar image state
+  const [avatarImage, setAvatarImage] = useState(defaultAvatarImage);
 
   useEffect(() => {
     fetchCart();
-    if (userId) { // Make sure userId is available
+    if (userId) {
       fetchUserData();
     }
-  }, [userId]); // Adding userId to dependency array
+  }, [userId]);
 
   const fetchCart = async () => {
     try {
@@ -53,7 +53,6 @@ const Navbar = () => {
     }
   };
 
-  // Update avatar image
   const updateAvatar = async (newAvatarImage) => {
     try {
       const token = localStorage.getItem('token');
@@ -87,7 +86,7 @@ const Navbar = () => {
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
               {avatarImage ? (
-                <img alt="User Avatar" src={avatarImage} /> // Display avatar image
+                <img alt="User Avatar" src={avatarImage} />
               ) : (
                 <div>Loading...</div>
               )}
@@ -112,7 +111,6 @@ const Navbar = () => {
             <li><Link to="/shop">Shop</Link></li>
           </ul>
         </div>
-        {/* Cart dropdown content */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="btn btn-ghost">
             <Link to="/cart">Cart</Link>
@@ -132,5 +130,6 @@ const Navbar = () => {
   );
 }
 
-export default Navbar; 
+export default Navbar;
+
 
