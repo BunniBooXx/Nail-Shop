@@ -22,7 +22,7 @@ const Navbar = () => {
   const fetchCart = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${backendUrl}/app/cart/read`, {
+      const response = await axios.get(`${backendUrl}/cart/read`, {
         headers: {
           Authorization: token
         }
@@ -36,7 +36,7 @@ const Navbar = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/app/user/${userId}`, {
+      const response = await fetch(`${backendUrl}/user/${userId}`, {
         headers: {
           'Authorization': token,
         },
@@ -56,7 +56,7 @@ const Navbar = () => {
   const updateAvatar = async (newAvatarImage) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/app/user/update/${userId}/avatar`, {
+      const response = await fetch(`${backendUrl}/user/update/${userId}/avatar`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

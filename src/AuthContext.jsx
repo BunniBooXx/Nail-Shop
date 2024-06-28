@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/app/user/logout`, {
+      const response = await fetch(`${backendUrl}/user/logout`, {
         method: 'DELETE',
         headers: {
           Authorization: token
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
     const fetchUserId = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${backendUrl}/app/user`, {
+        const response = await fetch(`${backendUrl}/user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
