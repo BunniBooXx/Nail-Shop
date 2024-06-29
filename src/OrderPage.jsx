@@ -4,7 +4,6 @@ import './orderpage.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-
 const OrderPage = () => {
   const { orderId } = useParams();
   const firstNameRef = useRef(null);
@@ -37,7 +36,7 @@ const OrderPage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': token // Add Bearer prefix
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -81,8 +80,8 @@ const OrderPage = () => {
             <input id="city" ref={cityRef} type="text" />
           </div>
           <div className="form-group">
-            <label htmlFor="city">State:</label>
-            <input id="city" ref={stateRef} type="text" />
+            <label htmlFor="state">State:</label> {/* Corrected id */}
+            <input id="state" ref={stateRef} type="text" />
           </div>
           <div className="form-group">
             <label htmlFor="country">Country:</label>
@@ -94,7 +93,7 @@ const OrderPage = () => {
           </div>
         </div>
         <div className="button-container">
-          //<Link to={`/checkout/${orderId}`}>
+          <Link to={`/checkout/${orderId}`}>
             <button className="submit-btn" onClick={handleShippingInfo}>
               Continue to Checkout
             </button>

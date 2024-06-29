@@ -144,7 +144,7 @@ const CartPage = () => {
                 </div>
                 <br/>
                 <br/>
-                <Link to="/order"><button className="order-button" onClick={handleCreatePreliminaryOrder}>Order</button></Link>
+                <Link to="#" onClick={handleCreatePreliminaryOrder}><button className="order-button">Order</button></Link>
                 <br/>
                 <br/>
                 {/* Message about creation and shipping */}
