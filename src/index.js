@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import './input.css';
-import './public/output.css'
 import { AuthProvider } from './AuthContext';
 
 
