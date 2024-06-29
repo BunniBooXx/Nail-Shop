@@ -33,9 +33,9 @@ const Login = () => {
       });
   
       const accessToken = response.headers.get('Authorization');
-      console.log(response)
-      console.log(response.headers)
-      console.log(accessToken)
+      console.log(response);
+      console.log(response.headers);
+      console.log(accessToken);
   
       if (response.ok && accessToken) {
         console.log('Login successful');
@@ -53,19 +53,11 @@ const Login = () => {
     }
   };
   
-
   const token = localStorage.getItem('token');
 
   return (
     <div className="background">
       <div className="login-container">
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
         <h2 className="login-title">Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
@@ -77,7 +69,7 @@ const Login = () => {
             <input type="password" id="password" name="password" onChange={handleInputChange} value={formData.password} />
           </div>
           {message && <div className="message">{message}</div>}
-          <button className= "login-button" type="submit">Login</button>
+          <button className="login-button" type="submit">Login</button>
         </form>
         {token && token !== "" && token !== undefined && (
           <div>You are logged in with this token: {token}</div>
@@ -88,6 +80,7 @@ const Login = () => {
 }
 
 export default Login;
+
 
 
 
