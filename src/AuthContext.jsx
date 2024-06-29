@@ -1,8 +1,8 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from './AuthContext';
+import axios from 'axios';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
-const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(() => {
@@ -53,8 +53,8 @@ const AuthProvider = ({ children }) => {
         const data = await response.json();
         console.log('Data:', data);
         if (response.ok) {
-          setUserId(data.userId);
-          console.log('UserId:', data.userId);
+          setUserId(data.user_id);
+          console.log('UserId:', data.user_id);
         } else {
           console.error('Failed to fetch userId:', data.message);
         }
@@ -76,8 +76,6 @@ const AuthProvider = ({ children }) => {
 };
 
 export { AuthContext, AuthProvider };
-
-
 
 
 
