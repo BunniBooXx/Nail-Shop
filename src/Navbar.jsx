@@ -53,29 +53,6 @@ const Navbar = () => {
     }
   };
 
-  const updateAvatar = async (newAvatarImage) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/user/update/${userId}/avatar`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        body: JSON.stringify({ avatar_image: newAvatarImage }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setAvatarImage(newAvatarImage);
-        console.log('Avatar image updated successfully');
-      } else {
-        console.error('Failed to update avatar image:', data.message);
-      }
-    } catch (error) {
-      console.error('Error updating avatar image:', error);
-    }
-  };
-
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
