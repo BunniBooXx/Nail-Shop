@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import StripeCheckoutForm from './StripeCheckoutForm';
-import CheckoutFormComponent from './CheckoutFormComponent';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./useAuth";
@@ -25,7 +24,6 @@ import NailSizeOptions from "./NailSizeOptions";
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfService from './TermsOfService';
 
-
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function App() {
@@ -48,7 +46,6 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:orderId" element={<OrderPage />} />
           <Route path="/productform" element={<ProductForm />} />
-          <Route path="/checkoutformcomponent" element={<CheckoutFormComponent />} />
           <Route path="/ordersuccesspage/:orderId" element={<OrderSuccessPage />} />
           <Route path="/product/read/:productId" element={<Product />} />
           <Route path="/checkout/:orderId" element={<Checkout />} />
@@ -79,8 +76,7 @@ const Checkout = () => {
           'Content-Type': 'application/json',
           'Authorization': token
         },
-        body: JSON.stringify({order_id: orderId}),
-
+        body: JSON.stringify({ order_id: orderId }),
       });
 
       const session = await response.json();
@@ -97,7 +93,6 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const token = localStorage.getItem('token');
         const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',

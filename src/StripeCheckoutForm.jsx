@@ -4,12 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
-const stripePromises = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
-
-console.log(stripePromises);
-
-console.log('Stripe Publishable Key:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
+const stripePromise = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
 
 const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
@@ -19,7 +14,7 @@ const StripeCheckoutForm = ({ orderId }) => {
     const fetchOrder = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
+        const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': token
@@ -40,13 +35,13 @@ const StripeCheckoutForm = ({ orderId }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${backendUrl}/send-emails/${orderId}`, // Use orderId instead of order_id
-        { orderId: paymentIntent.metadata.orderId },
+        `${backendUrl}/send-emails`, 
+        { order_id: orderId }, 
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token, // Include the user's authentication token
-          },
+            'Authorization': token
+          }
         }
       );
 
@@ -61,7 +56,7 @@ const StripeCheckoutForm = ({ orderId }) => {
   };
 
   return (
-    <Elements stripe={stripePromises}>
+    <Elements stripe={stripePromise}>
       <CheckoutFormComponent
         orderId={orderId}
         order={order}
@@ -72,3 +67,5 @@ const StripeCheckoutForm = ({ orderId }) => {
 };
 
 export default StripeCheckoutForm;
+
+

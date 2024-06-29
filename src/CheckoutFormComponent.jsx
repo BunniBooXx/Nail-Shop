@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
-
-
-
 const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -31,7 +28,7 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
         setPaymentError(error.message);
       } else {
         const response = await axios.post(`${backendUrl}/create-checkout-session`, {
-          orderId,
+          order_id: orderId,
           amount: order.total_amount * 100, // Convert to cents
         });
 
@@ -44,39 +41,15 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
         if (confirmError) {
           setPaymentError(confirmError.message);
         } else {
-          onPaymentSuccess(paymentIntent.id);
-
           if (paymentIntent && paymentIntent.status === 'succeeded') {
             setPaymentSuccess(true);
-            handlePaymentSuccess(paymentIntent); // Call the new function here
+            await onPaymentSuccess(paymentIntent);
           }
         }
       }
     } catch (error) {
       setPaymentError('An error occurred while processing your payment.');
       console.error('Error:', error);
-    }
-  };
-
-  const handlePaymentSuccess = async (paymentIntent) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/send-emails`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token, // Include the user's authentication token
-        },
-        body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send emails');
-      }
-
-      console.log('Emails sent successfully');
-    } catch (error) {
-      console.error('Error sending emails:', error);
     }
   };
 
@@ -93,3 +66,4 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
 };
 
 export default CheckoutFormComponent;
+
