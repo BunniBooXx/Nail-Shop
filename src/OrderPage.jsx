@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './orderpage.css';
 
@@ -13,6 +13,35 @@ const OrderPage = () => {
   const stateRef = useRef(null);
   const countryRef = useRef(null);
   const postalCodeRef = useRef(null);
+
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+    if (orderId) {
+      fetchOrderDetails();
+    }
+  }, [orderId]);
+
+  const fetchOrderDetails = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${backendUrl}/order/details/${orderId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      });
+
+      if (response.ok) {
+        const orderData = await response.json();
+        setOrder(orderData);
+      } else {
+        throw new Error('Order not found');
+      }
+    } catch (error) {
+      console.error('Error fetching order:', error);
+    }
+  };
 
   const handleShippingInfo = async () => {
     const firstName = firstNameRef.current.value;
@@ -31,12 +60,11 @@ const OrderPage = () => {
     const token = localStorage.getItem('token');
 
     try {
-      // Update order with user information
       const updateOrderResponse = await fetch(`${backendUrl}/order/update_order_with_user_info/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token // Add Bearer prefix
+          'Authorization': token
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -54,7 +82,6 @@ const OrderPage = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      // Handle error
     }
   };
 
@@ -62,36 +89,40 @@ const OrderPage = () => {
     <div className='background'>
       <div className="order-container">
         <div className="order-header">Mailing Address</div>
-        <div className="order-form">
-          <div className="form-group">
-            <label htmlFor="firstName">First Name:</label>
-            <input id="firstName" ref={firstNameRef} type="text" />
+        {order ? (
+          <div className="order-form">
+            <div className="form-group">
+              <label htmlFor="firstName">First Name:</label>
+              <input id="firstName" ref={firstNameRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Last Name:</label>
+              <input id="lastName" ref={lastNameRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="streetAddress">Street Address:</label>
+              <input id="streetAddress" ref={streetAddressRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="city">City:</label>
+              <input id="city" ref={cityRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="state">State:</label>
+              <input id="state" ref={stateRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="country">Country:</label>
+              <input id="country" ref={countryRef} type="text" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="postalCode">Postal Code:</label>
+              <input id="postalCode" ref={postalCodeRef} type="text" />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name:</label>
-            <input id="lastName" ref={lastNameRef} type="text" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="streetAddress">Street Address:</label>
-            <input id="streetAddress" ref={streetAddressRef} type="text" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="city">City:</label>
-            <input id="city" ref={cityRef} type="text" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="state">State:</label> {/* Corrected id */}
-            <input id="state" ref={stateRef} type="text" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="country">Country:</label>
-            <input id="country" ref={countryRef} type="text" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="postalCode">Postal Code:</label>
-            <input id="postalCode" ref={postalCodeRef} type="text" />
-          </div>
-        </div>
+        ) : (
+          <p>Loading order details...</p>
+        )}
         <div className="button-container">
           <Link to={`/checkout/${orderId}`}>
             <button className="submit-btn" onClick={handleShippingInfo}>

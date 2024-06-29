@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CartPage.css';
 
@@ -8,6 +8,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCart();
@@ -107,7 +108,7 @@ const CartPage = () => {
             });
             if (response.data.success) {
                 // Redirect to the order page with the created order ID
-                window.location.href = `/order/${response.data.order_id}`;
+                navigate(`/order/${response.data.order_id}`);
             } else {
                 console.error('Error creating preliminary order:', response.data.message);
             }
@@ -144,7 +145,7 @@ const CartPage = () => {
                 </div>
                 <br/>
                 <br/>
-                <Link to="#" onClick={handleCreatePreliminaryOrder}><button className="order-button">Order</button></Link>
+                <button className="order-button" onClick={handleCreatePreliminaryOrder}>Order</button>
                 <br/>
                 <br/>
                 {/* Message about creation and shipping */}
