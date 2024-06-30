@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import StripeCheckoutForm from './StripeCheckoutForm';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./useAuth";
@@ -19,10 +18,12 @@ import Product from "./Product";
 import CartPage from "./CartPage";
 import OrderPage from "./OrderPage";
 import ProductForm from "./ProductForm";
-import OrderSuccessPage from "./OrderSuccessPage";
+import OrderSuccessPage from "./OrderSuccessPage"; // Import OrderSuccessPage
 import NailSizeOptions from "./NailSizeOptions";
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfService from './TermsOfService';
+import StripeCheckoutForm from './StripeCheckoutForm';
+import CheckoutFormComponent from './CheckoutFormComponent';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -46,7 +47,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:orderId" element={<OrderPage />} />
           <Route path="/productform" element={<ProductForm />} />
-          <Route path="/ordersuccesspage/:orderId" element={<OrderSuccessPage />} />
+          <Route path="/checkoutformcomponent" element={<CheckoutFormComponent />} />
+          <Route path="/ordersuccesspage/:orderId" element={<OrderSuccessPage />} /> {/* Ensure this route is added */}
           <Route path="/product/read/:productId" element={<Product />} />
           <Route path="/checkout/:orderId" element={<Checkout />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
@@ -76,7 +78,8 @@ const Checkout = () => {
           'Content-Type': 'application/json',
           'Authorization': token
         },
-        body: JSON.stringify({ order_id: orderId }),
+        body: JSON.stringify({order_id: orderId}),
+
       });
 
       const session = await response.json();
@@ -93,6 +96,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
