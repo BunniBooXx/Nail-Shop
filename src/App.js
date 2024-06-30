@@ -65,7 +65,6 @@ const ProfileWithUserId = () => {
   const { userId } = useAuth();
   return <Profile userId={userId} />;
 };
-
 const Checkout = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);

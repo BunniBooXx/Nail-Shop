@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
-
-
 const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -68,4 +66,5 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
 };
 
 export default CheckoutFormComponent;
+
 
