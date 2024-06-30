@@ -14,12 +14,14 @@ const StripeCheckoutForm = ({ orderId }) => {
   const fetchOrder = useCallback(async () => {
     const token = localStorage.getItem('token');
     try {
+      console.log('Fetching order with ID:', orderId);
       const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
         }
       });
+      console.log('Order fetched:', response.data);
       setOrder(response.data);
     } catch (error) {
       console.error('Error fetching order:', error);
