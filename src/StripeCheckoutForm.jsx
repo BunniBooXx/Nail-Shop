@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import PropTypes from 'prop-types';
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
@@ -10,33 +11,33 @@ const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
-        });
-        setOrder(response.data);
-      } catch (error) {
-        console.error('Error fetching order:', error);
-      }
-    };
-
-    if (orderId) {
-      fetchOrder();
+  const fetchOrder = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      });
+      setOrder(response.data);
+    } catch (error) {
+      console.error('Error fetching order:', error);
     }
   }, [orderId, backendUrl]);
 
-  const handlePaymentSuccess = async (paymentIntent) => {
+  useEffect(() => {
+    if (orderId) {
+      fetchOrder();
+    }
+  }, [orderId, fetchOrder]);
+
+  const handlePaymentSuccess = useCallback(async (paymentIntent) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${backendUrl}/send-emails`, 
-        { order_id: orderId }, 
+        `${backendUrl}/send-emails`,
+        { order_id: orderId },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const StripeCheckoutForm = ({ orderId }) => {
     } catch (error) {
       console.error('Error sending emails:', error);
     }
-  };
+  }, [orderId, backendUrl]);
 
   return (
     <Elements stripe={stripePromise}>
@@ -66,6 +67,11 @@ const StripeCheckoutForm = ({ orderId }) => {
   );
 };
 
+StripeCheckoutForm.propTypes = {
+  orderId: PropTypes.string.isRequired,
+};
+
 export default StripeCheckoutForm;
+
 
 
