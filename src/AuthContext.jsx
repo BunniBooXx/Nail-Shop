@@ -26,7 +26,6 @@ const AuthProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        console.log('Logout successful');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         setUserId(null);
@@ -46,15 +45,12 @@ const AuthProvider = ({ children }) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token,
+            'Authorization': token
           },
         });
-        console.log('Response status:', response.status);
         const data = await response.json();
-        console.log('Data:', data);
         if (response.ok) {
-          setUserId(data.user_id); // Changed from `data.userId`
-          console.log('UserId:', data.user_id); // Changed from `data.userId`
+          setUserId(data.user_id);
         } else {
           console.error('Failed to fetch userId:', data.message);
         }
