@@ -32,9 +32,9 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
           amount: order.total_amount * 100, // Convert to cents
         });
 
-        const { clientSecret } = response.data;
+        const { sessionId } = response.data; // Ensure this is 'sessionId'
 
-        const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(sessionId, {
           payment_method: paymentMethod.id,
         });
 
@@ -66,5 +66,6 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
 };
 
 export default CheckoutFormComponent;
+
 
 
