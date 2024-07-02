@@ -63,7 +63,7 @@ const AuthProvider = ({ children }) => {
         const response = await fetch(`${backendUrl}/user/fetch/user`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': token
           },
           credentials: 'include'
         });
@@ -72,6 +72,7 @@ const AuthProvider = ({ children }) => {
           const data = await response.json();
           setUserId(data.user_id);
         } else if (response.status === 401) {
+          // Token might be expired, try to refresh it
           await fetchNewAccessToken();
         } else {
           console.error('Failed to fetch userId:', response.status);
@@ -94,8 +95,6 @@ const AuthProvider = ({ children }) => {
 };
 
 export { AuthContext, AuthProvider };
-
-
 
 
 
