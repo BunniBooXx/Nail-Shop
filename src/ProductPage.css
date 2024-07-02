@@ -105,6 +105,14 @@ body {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
+    border: 1px solid #ccc; /* Add border to inputs */
+    border-radius: 4px; /* Add border radius to inputs */
+}
+
+/* Placeholder text styles */
+.custom-measurements input::placeholder {
+    color: #aaa; /* Ensure placeholder text is visible */
+    opacity: 1; /* Ensure full opacity for placeholder text */
 }
 
 /* Add to cart button styles */
