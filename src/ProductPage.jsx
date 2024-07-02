@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ProductPage.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -12,8 +12,12 @@ export default function ProductPage() {
         leftHand: '',
         rightHand: ''
     });
+    const [quantity, setQuantity] = useState(1); // Dynamic quantity
+    const [notification, setNotification] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
 
     const { productId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${backendUrl}/product/read/${productId}`)
@@ -24,6 +28,21 @@ export default function ProductPage() {
             .catch(error => {
                 console.error('Error fetching product:', error);
             });
+
+        // Check if user is logged in by verifying token
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.get(`${backendUrl}/user`, { headers: { 'Authorization': `Bearer ${token}` } })
+                .then(response => {
+                    if (response.status === 200) {
+                        setIsLoggedIn(true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking login status:', error);
+                    setIsLoggedIn(false);
+                });
+        }
     }, [productId]);
 
     const handleSizeChange = (size) => {
@@ -32,13 +51,43 @@ export default function ProductPage() {
 
     const handleCustomMeasurementsChange = (e, field) => {
         setCustomMeasurements((prevState) => ({
-          ...prevState,
-          [field]: e.target.value,
+            ...prevState,
+            [field]: e.target.value,
         }));
     };
 
+    const handleQuantityChange = (e) => {
+        setQuantity(e.target.value);
+    };
+
     const handleAddToCart = () => {
-        // Handle adding product to cart
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setNotification('You need to be logged in to add items to the cart.');
+            return;
+        }
+
+        axios.post(`${backendUrl}/cart/add_to_cart`, {
+            product_id: productId,
+            quantity: parseInt(quantity), // Use the dynamic quantity
+            nail_size_option_id: selectedSize,
+            left_hand_custom_size: customMeasurements.leftHand,
+            right_hand_custom_size: customMeasurements.rightHand
+        }, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+            console.log('Add to cart response:', response.data);
+            setNotification('Product added to cart successfully.');
+        })
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+            if (error.response && error.response.data) {
+                setNotification(error.response.data.error || 'Failed to add product to cart.');
+            } else {
+                setNotification('Failed to add product to cart.');
+            }
+        });
     };
 
     return (
@@ -77,8 +126,20 @@ export default function ProductPage() {
                         onChange={(e) => handleCustomMeasurementsChange(e, 'rightHand')} 
                     />
                 </div>
+                <div className="quantity-selection">
+                    <h3 className="quantity-title">Quantity:</h3>
+                    <input 
+                        type="number" 
+                        min="1" 
+                        value={quantity} 
+                        onChange={handleQuantityChange} 
+                        className="quantity-input"
+                    />
+                </div>
                 <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
+                {notification && <p className="notification">{notification}</p>}
             </div>
         </div>
     );
 }
+
