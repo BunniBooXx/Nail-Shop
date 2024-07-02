@@ -35,7 +35,7 @@ export default function ProductPage() {
           ...prevState,
           [field]: e.target.value,
         }));
-      };
+    };
 
     const handleAddToCart = () => {
         // Handle adding product to cart
@@ -63,6 +63,7 @@ export default function ProductPage() {
                 </div>
                 <div className="custom-measurements">
                     <h3 className="custom-measurements-title">Custom Nail Measurements:</h3>
+                    <p>Example: Thumb: 11mm, Index: 9mm, Middle Finger: 10mm, Ring Finger: 12mm, Pinky: 8mm</p>
                     <input 
                         type="text" 
                         placeholder="Left Hand Measurements (e.g., Thumb: 11mm, Index: 12mm, Middle Finger: 14mm)" 
