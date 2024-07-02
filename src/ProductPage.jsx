@@ -14,6 +14,7 @@ export default function ProductPage() {
     });
     const [quantity, setQuantity] = useState(1); // Dynamic quantity
     const [notification, setNotification] = useState('');
+    const [notificationType, setNotificationType] = useState(''); // For success or error
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
 
     const { productId } = useParams();
@@ -64,21 +65,27 @@ export default function ProductPage() {
         const token = localStorage.getItem('token');
         if (!token) {
             setNotification('You need to be logged in to add items to the cart.');
+            setNotificationType('error');
             return;
         }
 
-        axios.post(`${backendUrl}/cart/add_to_cart`, {
+        const requestData = {
             product_id: productId,
             quantity: parseInt(quantity), // Use the dynamic quantity
             nail_size_option_id: selectedSize,
             left_hand_custom_size: customMeasurements.leftHand,
             right_hand_custom_size: customMeasurements.rightHand
-        }, {
+        };
+
+        console.log('Request Data:', requestData);
+
+        axios.post(`${backendUrl}/cart/add_to_cart`, requestData, {
             headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(response => {
             console.log('Add to cart response:', response.data);
             setNotification('Product added to cart successfully.');
+            setNotificationType('success');
         })
         .catch(error => {
             console.error('Error adding to cart:', error);
@@ -87,6 +94,7 @@ export default function ProductPage() {
             } else {
                 setNotification('Failed to add product to cart.');
             }
+            setNotificationType('error');
         });
     };
 
@@ -137,9 +145,8 @@ export default function ProductPage() {
                     />
                 </div>
                 <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
-                {notification && <p className="notification">{notification}</p>}
+                {notification && <div className={`notification ${notificationType}`}>{notification}</div>}
             </div>
         </div>
     );
 }
-
