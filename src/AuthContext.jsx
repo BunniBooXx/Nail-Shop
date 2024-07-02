@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
-        setUserId(username);  // You may need to fetch and set the actual user ID here
+        setUserId(username);
         localStorage.setItem('userId', JSON.stringify(username));
       } else {
         console.error('Login failed:', response.status);
@@ -72,7 +72,6 @@ const AuthProvider = ({ children }) => {
           const data = await response.json();
           setUserId(data.user_id);
         } else if (response.status === 401) {
-          // Token might be expired, try to refresh it
           await fetchNewAccessToken();
         } else {
           console.error('Failed to fetch userId:', response.status);
@@ -95,6 +94,7 @@ const AuthProvider = ({ children }) => {
 };
 
 export { AuthContext, AuthProvider };
+
 
 
 
