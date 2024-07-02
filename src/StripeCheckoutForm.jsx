@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
-import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
+import CheckoutFormComponent from './CheckoutFormComponent';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -74,6 +74,7 @@ StripeCheckoutForm.propTypes = {
 };
 
 export default StripeCheckoutForm;
+
 
 
 
