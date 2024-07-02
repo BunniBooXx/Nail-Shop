@@ -63,8 +63,18 @@ export default function ProductPage() {
                 </div>
                 <div className="custom-measurements">
                     <h3 className="custom-measurements-title">Custom Nail Measurements:</h3>
-                    <input type="text" placeholder="Left Hand Measurements" value={customMeasurements.leftHand} onChange={(e) => handleCustomMeasurementsChange(e, 'leftHand')} />
-                    <input type="text" placeholder="Right Hand Measurements" value={customMeasurements.rightHand} onChange={(e) => handleCustomMeasurementsChange(e, 'rightHand')} />
+                    <input 
+                        type="text" 
+                        placeholder="Left Hand Measurements (e.g., Thumb: 11mm, Index: 12mm, Middle Finger: 14mm)" 
+                        value={customMeasurements.leftHand} 
+                        onChange={(e) => handleCustomMeasurementsChange(e, 'leftHand')} 
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Right Hand Measurements (e.g., Thumb: 11mm, Index: 12mm, Middle Finger: 14mm)" 
+                        value={customMeasurements.rightHand} 
+                        onChange={(e) => handleCustomMeasurementsChange(e, 'rightHand')} 
+                    />
                 </div>
                 <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
             </div>
