@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Product.css';
 import { useParams } from 'react-router-dom';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL; 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Product = () => {
   const { productId } = useParams();
@@ -13,6 +13,7 @@ const Product = () => {
   const [leftHandCustomSize, setLeftHandCustomSize] = useState('');
   const [rightHandCustomSize, setRightHandCustomSize] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -40,12 +41,17 @@ const Product = () => {
 
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
-      alert('Please log in or sign up to add items to your cart.');
+      setNotification({ type: 'error', message: 'Please log in or sign up to add items to your cart.' });
       return;
     }
 
     if (!nailSizeOption) {
-      alert('Please select a nail size option');
+      setNotification({ type: 'error', message: 'Please select a nail size option' });
+      return;
+    }
+
+    if (product.quantity < quantity) {
+      setNotification({ type: 'error', message: 'Product is sold out' });
       return;
     }
 
@@ -67,12 +73,15 @@ const Product = () => {
       });
 
       if (response.data.message) {
+        setNotification({ type: 'success', message: 'Product added to cart successfully' });
         console.log('Product added to cart successfully');
         // Optionally, you can redirect the user to the cart page
       } else {
+        setNotification({ type: 'error', message: 'Failed to add product to cart' });
         console.error('Failed to add product to cart:', response.data.error);
       }
     } catch (error) {
+      setNotification({ type: 'error', message: 'Error adding to cart' });
       console.error('Error adding to cart:', error);
     }
   };
@@ -137,6 +146,7 @@ const Product = () => {
               type="text"
               value={leftHandCustomSize}
               onChange={handleLeftHandCustomSizeChange}
+              placeholder="Thumb: 11mm, Index: 9mm, Middle: 10mm, Ring Finger: 10mm, Pinky: 8mm"
             />
           </label>
           <label>
@@ -145,6 +155,7 @@ const Product = () => {
               type="text"
               value={rightHandCustomSize}
               onChange={handleRightHandCustomSizeChange}
+              placeholder="Thumb: 11mm, Index: 9mm, Middle: 10mm, Ring Finger: 10mm, Pinky: 8mm"
             />
           </label>
         </div>
@@ -153,7 +164,11 @@ const Product = () => {
       <button className="add-to-cart-btn" onClick={handleAddToCart}>
         Add to Cart
       </button>
-      
+
+      {notification && (
+        <div className={`notification ${notification.type}`}>{notification.message}</div>
+      )}
+
       <div>
         <p>Don't see your size? Check out our <a href="/sizing-guide" className="size-link">Size Guide</a>.</p>
       </div>

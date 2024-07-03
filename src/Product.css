@@ -101,3 +101,46 @@
 .size-link {
   color: blue;
 }
+
+/* Notification styles */
+.notification {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.notification.success {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.notification.error {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+/* Quantity selection styles */
+.quantity-selection {
+  margin-bottom: 20px;
+}
+
+.quantity-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
