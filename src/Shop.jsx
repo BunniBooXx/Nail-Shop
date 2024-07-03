@@ -11,7 +11,7 @@ function Product({ product }) {
   return (
     <div className={`product ${isSoldOut ? 'sold-out' : ''}`} key={product.id}>
       {isSoldOut && <div className="sold-out-overlay">Sold Out</div>}
-      <img src={`${product.image_url}`} alt={product.name} />
+      <img src={product.image_url} alt={product.name} />
       <br />
       <h2>{product.name}</h2>
       <p>ID: {product.id}</p>
@@ -44,10 +44,7 @@ function Shop() {
       </div>
       <div className="products">
         {products.map(product => (
-          <Product
-            key={product.id}
-            product={product}
-          />
+          <Product key={product.id} product={product} />
         ))}
       </div>
     </div>
