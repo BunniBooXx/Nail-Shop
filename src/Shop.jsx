@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -6,11 +5,12 @@ import './Shop.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-function Product({ product}) {
-
+function Product({ product }) {
+  const isSoldOut = product.quantity_available <= 0;
 
   return (
-    <div className="product" key={product.id}>
+    <div className={`product ${isSoldOut ? 'sold-out' : ''}`} key={product.id}>
+      {isSoldOut && <div className="sold-out-overlay">Sold Out</div>}
       <img src={`${product.image_url}`} alt={product.name} />
       <br />
       <h2>{product.name}</h2>
@@ -20,7 +20,7 @@ function Product({ product}) {
       <br />
       <Link to={`/product/read/${product.id}`} className="btn btn-secondary">View Item</Link>
     </div>
-  )
+  );
 }
 
 function Shop() {
@@ -36,7 +36,6 @@ function Shop() {
         console.error('Error fetching products:', error);
       });
   }, []);
-
 
   return (
     <div className="container">
