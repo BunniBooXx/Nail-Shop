@@ -1,62 +1,92 @@
-
-
 .dev-info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px;
-    padding-top: 50px; /* Reduced padding to make the page shorter */
-    flex: 1; /* Allow the container to grow and fill available space */
+    padding: 20px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #fff0f6;
+    border: 2px solid #ff69b4;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.image-container-dev {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .dev-info-image img {
     border-radius: 50%;
-    max-width: 200px; /* Reduced max-width to make the image smaller */
-    max-height: 300px; /* Reduced max-height to make the image smaller */
-    border: 5px solid #ffc0cb; /* Pink border for extra cuteness */
-    margin-bottom: 20px; /* Margin at the bottom for spacing */
+    border: 5px solid #ff69b4;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
+.dev-info-text {
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #ffe4e1;
+    border-radius: 15px;
+    border: 2px solid #ff69b4;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 .cute-heading {
-    color: #ff69b4; /* Pink color for heading */
-    font-size: 22px; /* Reduced font size */
+    color: #ff69b4;
+    font-size: 1.8em;
     margin-bottom: 10px;
-    text-align:center; /* Added margin to space the heading */
+    margin-top: 0;
 }
 
 .cute-paragraph {
     color: #333;
-    font-size: 16px; /* Reduced font size */
-    font-style: italic;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-top: 0;
 }
 
-.dev-info-text {
-    max-width: 600px; /* Reduced max-width to make the text container smaller */
-    text-align: center; /* Center align the text */
-    padding: 0 20px; /* Added padding for spacing */
-    padding-left: 20px;
-}
-
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .dev-info-container {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 100px; /* Adjusted padding for larger screens */
+        padding: 15px;
     }
 
     .dev-info-image img {
-        margin-bottom: 0;
-        margin-right: 50px; /* Margin to the right for spacing */
+        width: 120px;
+        height: 120px;
     }
 
-    .dev-info-text {
-        text-align: right; /* Align text to the left for larger screens */
+    .cute-heading {
+        font-size: 1.5em;
+    }
+
+    .cute-paragraph {
+        font-size: 1em;
     }
 }
 
+@media (max-width: 480px) {
+    .dev-info-container {
+        padding: 10px;
+    }
 
+    .dev-info-image img {
+        width: 100px;
+        height: 100px;
+    }
 
+    .cute-heading {
+        font-size: 1.2em;
+    }
+
+    .cute-paragraph {
+        font-size: 0.9em;
+    }
+}
