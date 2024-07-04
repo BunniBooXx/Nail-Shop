@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { FaYoutube, FaInstagram, FaEnvelope, FaPhone } from 'react-icons/fa';
-import './Contact.css'; // Import the new stylesheet
-import { FaMusic } from 'react-icons/fa';
+import { FaYoutube, FaInstagram, FaEnvelope, FaPhone, FaMusic } from 'react-icons/fa';
+import './Contact.css';
 
 const Contact = () => {
   const form = useRef();
@@ -28,36 +27,31 @@ const Contact = () => {
         <h1 className="title">Kawaii Contact Form</h1>
 
         <label className="input-label">Your Name ♡</label>
-        <input type="text" name="user_name" className="input-field" placeholder="Your cute name" />
+        <input type="text" name="user_name" className="input-field" placeholder="Your cute name" required />
 
         <label className="input-label">Your Email ✉</label>
-        <input type="email" name="user_email" className="input-field" placeholder="Your adorable email" />
+        <input type="email" name="user_email" className="input-field" placeholder="Your adorable email" required />
 
         <label className="input-label">Your Message 💬</label>
-        <textarea name="message" className="input-field" placeholder="Your sweet message" />
+        <textarea name="message" className="input-field" placeholder="Your sweet message" required />
 
         <button type="submit" className="submit-button">Send Your Message</button>
-        <br/>
         {messageSent && (
-        <div className="popup-message">
-          <p>Message Sent! 💌</p>
-        </div>
-      )}
+          <div className="popup-message">
+            <p>Message Sent! 💌</p>
+          </div>
+        )}
       </form>
-
-      <br/>
 
       <div className="contact-info">
         <div className="contact-item">
           <FaEnvelope className="contact-icon" />
           <p>bunnybubblenails@gmail.com</p>
         </div>
-        <br/>
         <div className="contact-item">
-          <FaPhone className="contact-icon" /> 
+          <FaPhone className="contact-icon" />
           <p>+1-347-530-3644</p>
         </div>
-        <br/>
         <div className="social-icons">
           <a href="https://www.youtube.com/@bunnybubblenails" target="_blank" rel="noopener noreferrer">
             <FaYoutube className="social-icon" />
