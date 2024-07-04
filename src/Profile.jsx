@@ -193,22 +193,22 @@ const Profile = () => {
         <h2 className="section-title">Choose Your Avatar</h2>
         <div className="avatar-selection">
   <img
-    src="./blonde_heart_avatar.png"
+    src="./blonde_heart_avatar.jpg"
     alt="Avatar 2"
     className="avatar"
-    onClick={() => updateAvatar("./blonde_heart_avatar.png")}
+    onClick={() => updateAvatar("./blonde_heart_avatar.jpg")}
   />
   <img
-    src="./brown_avatar.png"
+    src="./brown_avatar.jpg"
     alt="Avatar 3"
     className="avatar"
-    onClick={() => updateAvatar("./brown_avatar.png")}
+    onClick={() => updateAvatar("./brown_avatar.jpg")}
   />
   <img
-    src="./purple-hair.png"
+    src="./purple-hair.jpg"
     alt="Avatar 7"
     className="avatar"
-    onClick={() => updateAvatar("./purple-hair.png")}
+    onClick={() => updateAvatar("./purple-hair.jpg")}
   />
   <img
     src="./green_eye_avatar.jpg"
@@ -217,28 +217,28 @@ const Profile = () => {
     onClick={() => updateAvatar("./green_eye_avatar.jpg")}
   />
   <img
-    src="./pink-tan.png"
+    src="./pink-tan.jpg"
     alt="Avatar 7"
     className="avatar"
-    onClick={() => updateAvatar("./pink-tan.png")}
+    onClick={() => updateAvatar("./pink-tan.jpg")}
   />
   <img
-    src="./black_avatar.png"
+    src="./black_avatar.jpg"
     alt="Avatar 5"
     className="avatar"
-    onClick={() => updateAvatar("./black_avatar.png")}
+    onClick={() => updateAvatar("./black_avatar.jpg")}
   />
   <img
-    src="./red_avatar.png"
+    src="./red_avatar.jpg"
     alt="Avatar 6"
     className="avatar"
-    onClick={() => updateAvatar("./red_avatar.png")}
+    onClick={() => updateAvatar("./red_avatar.jpg")}
   />
   <img
-    src="./blonde_avatar.png"
+    src="./blue_eye_avatar.jpg"
     alt="Avatar 7"
     className="avatar"
-    onClick={() => updateAvatar("./blonde_avatar.png")}
+    onClick={() => updateAvatar("./blonde_avatar.jpg")}
   />
 </div>
 
