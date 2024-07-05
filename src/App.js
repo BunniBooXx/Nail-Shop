@@ -25,6 +25,7 @@ import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfService from './TermsOfService';
 import StripeCheckoutForm from './StripeCheckoutForm';
 import CheckoutFormComponent from './CheckoutFormComponent';
+import Cancel from './Cancel';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/create-checkout-session/:orderId" element={<StripeCheckoutForm />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/cancel" element={<Cancel/>} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/order/:orderId" element={<OrderPage />} />
           <Route path="/productform" element={<ProductForm />} />

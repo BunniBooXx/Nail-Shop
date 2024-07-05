@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,29 +30,32 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', // Ensure cookies are sent
       });
-  
+
+      const data = await response.json();
       const accessToken = response.headers.get('Authorization');
+
       console.log(response);
       console.log(response.headers);
       console.log(accessToken);
-  
+
       if (response.ok && accessToken) {
         console.log('Login successful');
         setMessage('Login successful');
-  
+
         localStorage.setItem('token', accessToken);
         navigate('/shop');
       } else {
         console.error('Invalid credentials');
-        setMessage('Invalid credentials');
+        setMessage(data.message || 'Invalid credentials');
       }
     } catch (error) {
       console.error('Error in login request:', error);
       setMessage('Network error');
     }
   };
-  
+
   const token = localStorage.getItem('token');
 
   return (
@@ -80,6 +83,7 @@ const Login = () => {
 }
 
 export default Login;
+
 
 
 
