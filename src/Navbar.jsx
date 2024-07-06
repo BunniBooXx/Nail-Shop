@@ -24,7 +24,7 @@ const Navbar = () => {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${backendUrl}/cart/read`, {
         headers: {
-          Authorization: token
+          'Authorization': token
         }
       });
       setCartData(response.data);
