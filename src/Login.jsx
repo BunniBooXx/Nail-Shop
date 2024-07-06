@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,6 +23,9 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    console.log('Backend URL:', backendUrl);
+
     try {
       const response = await fetch(`${backendUrl}/user/login`, {
         method: 'POST',
@@ -36,9 +39,10 @@ const Login = () => {
       const data = await response.json();
       const accessToken = response.headers.get('Authorization');
 
-      console.log(response);
-      console.log(response.headers);
-      console.log(accessToken);
+      console.log('Response:', response);
+      console.log('Headers:', response.headers);
+      console.log('Access Token:', accessToken);
+      console.log('Response Data:', data);
 
       if (response.ok && accessToken) {
         console.log('Login successful');
@@ -83,6 +87,7 @@ const Login = () => {
 }
 
 export default Login;
+
 
 
 
