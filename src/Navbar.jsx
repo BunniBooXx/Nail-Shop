@@ -36,9 +36,9 @@ const Navbar = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${backendUrl}/user/${userId}`, {
+      const response = await fetch(`${backendUrl}/fetch/user`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': token,
         },
       });
       const data = await response.json();
