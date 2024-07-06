@@ -38,7 +38,7 @@ const Navbar = () => {
       const token = localStorage.getItem('token');
       const response = await fetch(`${backendUrl}/user/${userId}`, {
         headers: {
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
       });
       const data = await response.json();
