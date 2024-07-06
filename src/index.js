@@ -5,6 +5,10 @@ import App from './App';
 import './input.css';
 import { AuthProvider } from './AuthContext';
 
+
+React.useDefineForClassFields = true;
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -18,7 +18,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${backendUrl}/user/${userId}`, {
+        const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
