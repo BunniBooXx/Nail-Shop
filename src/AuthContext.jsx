@@ -81,7 +81,7 @@ const AuthProvider = ({ children }) => {
           return;
         }
 
-        const response = await fetch(`${backendUrl}/user/fetch/user`, {
+        const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': token,
