@@ -40,7 +40,6 @@ const Login = () => {
 
       console.log('Response:', response);
       console.log('Status:', response.status);
-      console.log('Headers:', response.headers);
 
       if (response.ok) {
         const data = await response.json();
@@ -48,7 +47,7 @@ const Login = () => {
         console.log('Access Token:', accessToken);
         console.log('Response Data:', data);
 
-        if (accessToken) {
+        if (data.access_token) {
           console.log('Login successful');
           setMessage('Login successful');
           localStorage.setItem('token', accessToken);
