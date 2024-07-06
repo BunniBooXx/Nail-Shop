@@ -37,31 +37,37 @@ const Login = () => {
         body: JSON.stringify(formData),
         credentials: 'include',
       });
-  
-      const data = await response.json();
-      const accessToken = `Bearer ${data.access_token}`;
-  
+
       console.log('Response:', response);
+      console.log('Status:', response.status);
       console.log('Headers:', response.headers);
-      console.log('Access Token:', accessToken);
-      console.log('Response Data:', data);
-  
-      if (response.ok && accessToken) {
-        console.log('Login successful');
-        setMessage('Login successful');
-        localStorage.setItem('token', accessToken);
-        await login(formData.username, formData.password);
-        navigate('/shop');
+
+      if (response.ok) {
+        const data = await response.json();
+        const accessToken = `Bearer ${data.access_token}`;
+        console.log('Access Token:', accessToken);
+        console.log('Response Data:', data);
+
+        if (accessToken) {
+          console.log('Login successful');
+          setMessage('Login successful');
+          localStorage.setItem('token', accessToken);
+          console.log('Token set in localStorage:', localStorage.getItem('token'));
+          await login(formData.username, formData.password);
+          navigate('/shop');
+        } else {
+          console.error('Access token not found');
+          setMessage('Invalid credentials');
+        }
       } else {
-        console.error('Invalid credentials');
-        setMessage(data.message || 'Invalid credentials');
+        console.error('Invalid credentials:', response.status);
+        setMessage('Invalid credentials');
       }
     } catch (error) {
       console.error('Error in login request:', error);
       setMessage('Network error');
     }
   };
-  
 
   return (
     <div className="background">
@@ -97,6 +103,7 @@ const Login = () => {
 }
 
 export default Login;
+
 
 
 
