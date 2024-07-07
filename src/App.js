@@ -80,7 +80,7 @@ const Checkout = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({order_id: orderId}),
 
@@ -104,7 +104,7 @@ const Checkout = () => {
         const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
           } 
         });
         const data = await response.json();
