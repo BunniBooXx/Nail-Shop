@@ -15,37 +15,36 @@ const Profile = () => {
 
   useEffect(() => {
     if (userId) { 
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token,
-          },
-        });
-        console.log('Response status:', response.status);
-        const data = await response.json();
-        console.log('Data:', data);
-        if (response.ok) {
-          setUser(data);
-          setUsername(data.username);
-          setEmail(data.email);
-          setAvatar(data.avatar_image);
-        } else {
-          console.error('Failed to fetch user details:', data.message);
+      const fetchUser = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          console.log('token:', token); // Debugging line
+          const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          console.log('Response status:', response.status);
+          const data = await response.json();
+          console.log('Data:', data);
+          if (response.ok) {
+            setUser(data);
+            setUsername(data.username);
+            setEmail(data.email);
+            setAvatar(data.avatar_image);
+          } else {
+            console.error('Failed to fetch user details:', data.message);
+          }
+        } catch (error) {
+          console.error('Error fetching user details:', error);
         }
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-  
-    fetchUser();
-  }
-  }, [userId]);
+      };
     
-  
+      fetchUser();
+    }
+  }, [userId]);
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -66,11 +65,12 @@ const Profile = () => {
   const updateUser = async (updateType) => {
     try {
       const token = localStorage.getItem('token');
+      console.log('token:', token); // Debugging line
       const response = await fetch(`${backendUrl}/user/update/${userId}/${updateType}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ 
           [updateType]: updateType === 'avatar' ? avatar_image : updateType === 'username' ? username : updateType === 'password' ? password : email 
@@ -92,11 +92,12 @@ const Profile = () => {
   const updateUsername = async () => {
     try {
       const token = localStorage.getItem('token');
+      console.log('token:', token); // Debugging line
       const response = await fetch(`${backendUrl}/user/update/${userId}/username`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ username }),
       });
@@ -116,11 +117,12 @@ const Profile = () => {
   const updatePassword = async () => {
     try {
       const token = localStorage.getItem('token');
+      console.log('token:', token); // Debugging line
       const response = await fetch(`${backendUrl}/user/update/${userId}/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ password }),
       });
@@ -140,11 +142,12 @@ const Profile = () => {
   const updateEmail = async () => {
     try {
       const token = localStorage.getItem('token');
+      console.log('token:', token); // Debugging line
       const response = await fetch(`${backendUrl}/user/update/${userId}/email`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ email }),
       });
@@ -164,11 +167,12 @@ const Profile = () => {
   const updateAvatar = async (imagePath) => {
     try {
       const token = localStorage.getItem('token');
+      console.log('token:', token); // Debugging line
       const response = await fetch(`${backendUrl}/user/update/${userId}/avatar`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ avatar_image: imagePath }),
       });
@@ -192,57 +196,56 @@ const Profile = () => {
       <div className="avatar-section">
         <h2 className="section-title">Choose Your Avatar</h2>
         <div className="avatar-selection">
-  <img
-    src="./blonde_heart_avatar.jpg"
-    alt="Avatar 2"
-    className="avatar"
-    onClick={() => updateAvatar("./blonde_heart_avatar.jpg")}
-  />
-  <img
-    src="./brown_avatar.jpg"
-    alt="Avatar 3"
-    className="avatar"
-    onClick={() => updateAvatar("./brown_avatar.jpg")}
-  />
-  <img
-    src="./purple-hair.jpg"
-    alt="Avatar 7"
-    className="avatar"
-    onClick={() => updateAvatar("./purple-hair.jpg")}
-  />
-  <img
-    src="./green_eye_avatar.jpg"
-    alt="Avatar 4"
-    className="avatar"
-    onClick={() => updateAvatar("./green_eye_avatar.jpg")}
-  />
-  <img
-    src="./pink-tan.jpg"
-    alt="Avatar 7"
-    className="avatar"
-    onClick={() => updateAvatar("./pink-tan.jpg")}
-  />
-  <img
-    src="./black_avatar.jpg"
-    alt="Avatar 5"
-    className="avatar"
-    onClick={() => updateAvatar("./black_avatar.jpg")}
-  />
-  <img
-    src="./red_avatar.jpg"
-    alt="Avatar 6"
-    className="avatar"
-    onClick={() => updateAvatar("./red_avatar.jpg")}
-  />
-  <img
-    src="./blue_eye_avatar.jpg"
-    alt="Avatar 7"
-    className="avatar"
-    onClick={() => updateAvatar("./blonde_avatar.jpg")}
-  />
-</div>
-
-</div>
+          <img
+            src="./blonde_heart_avatar.jpg"
+            alt="Avatar 2"
+            className="avatar"
+            onClick={() => updateAvatar("./blonde_heart_avatar.jpg")}
+          />
+          <img
+            src="./brown_avatar.jpg"
+            alt="Avatar 3"
+            className="avatar"
+            onClick={() => updateAvatar("./brown_avatar.jpg")}
+          />
+          <img
+            src="./purple-hair.jpg"
+            alt="Avatar 7"
+            className="avatar"
+            onClick={() => updateAvatar("./purple-hair.jpg")}
+          />
+          <img
+            src="./green_eye_avatar.jpg"
+            alt="Avatar 4"
+            className="avatar"
+            onClick={() => updateAvatar("./green_eye_avatar.jpg")}
+          />
+          <img
+            src="./pink-tan.jpg"
+            alt="Avatar 7"
+            className="avatar"
+            onClick={() => updateAvatar("./pink-tan.jpg")}
+          />
+          <img
+            src="./black_avatar.jpg"
+            alt="Avatar 5"
+            className="avatar"
+            onClick={() => updateAvatar("./black_avatar.jpg")}
+          />
+          <img
+            src="./red_avatar.jpg"
+            alt="Avatar 6"
+            className="avatar"
+            onClick={() => updateAvatar("./red_avatar.jpg")}
+          />
+          <img
+            src="./blue_eye_avatar.jpg"
+            alt="Avatar 7"
+            className="avatar"
+            onClick={() => updateAvatar("./blonde_avatar.jpg")}
+          />
+        </div>
+      </div>
       <div className="personal-info-section">
         <h2 className="section-title">Personal Information</h2>
         <div className="personal-info-form">
@@ -261,3 +264,4 @@ const Profile = () => {
 }
 
 export default Profile;
+

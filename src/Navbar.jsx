@@ -8,39 +8,28 @@ import defaultAvatarImage from './images/default-avatar-image.jpg';
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Navbar = () => {
-  const { user, setUserData } = useAuth()
+  const { userId, logout } = useAuth();
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
   const [avatarImage, setAvatarImage] = useState(defaultAvatarImage);
-  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    setUserId(null);
-    navigate('/login');
-  };
-
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    
-    console.log('storedUserId:', storedUserId); // Debugging line
 
-    if (storedUserId && token) {
-      const numericUserId = Number(storedUserId); // Ensure userId is converted to a number
-      console.log('numericUserId:', numericUserId); // Debugging line
-      setUserId(numericUserId);
+    console.log('storedUserId:', userId); // Debugging line
+
+    if (userId && token) {
       fetchCart(token);
-      fetchUserData(numericUserId, token);
+      fetchUserData(userId, token);
     }
-  }, []);
+  }, [userId]);
 
   const fetchCart = async (token) => {
     try {
       const response = await axios.get(`${backendUrl}/cart/read`, {
         headers: {
-          'Authorization': token,
+          'Authorization': `Bearer ${token}`,
         },
       });
       setCartData(response.data);
@@ -49,17 +38,24 @@ const Navbar = () => {
     }
   };
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (userId, token) => {
     try {
-      const response = await fetch(`${backendUrl}/user/fetch/${user.id}`, {
+      const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (response.ok) {
         const userData = await response.json();
-        setUserData(userData);
+        console.log('Fetched user data:', userData); // Debugging line
+        setUser(userData);
+        if (userData.avatar_image) {
+          setAvatarImage(userData.avatar_image);
+          console.log('Avatar image set to:', userData.avatar_image); // Debugging line
+        } else {
+          console.log('User does not have an avatar image'); // Debugging line
+        }
       } else {
         throw new Error('Failed to fetch user data');
       }
@@ -123,6 +119,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 

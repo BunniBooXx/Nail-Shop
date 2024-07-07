@@ -63,6 +63,7 @@ function App() {
   );
 }
 
+
 const ProfileWithUserId = () => {
   const { userId } = useAuth();
   return <Profile userId={userId} />;
@@ -79,7 +80,7 @@ const Checkout = () => {
         const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
           }
         });
         const data = await response.json();
@@ -91,6 +92,7 @@ const Checkout = () => {
 
     fetchOrder();
   }, [orderId]);
+  console.log(orderId)
 
   return order ? (
     <StripeCheckoutForm

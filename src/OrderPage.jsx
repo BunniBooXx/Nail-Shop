@@ -28,7 +28,7 @@ const OrderPage = () => {
       const response = await fetch(`${backendUrl}/order/details/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': `Bearer ${token}`
         }
       });
 
@@ -64,7 +64,7 @@ const OrderPage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           first_name: firstName,

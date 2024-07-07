@@ -18,7 +18,7 @@ const StripeCheckoutForm = ({ orderId }) => {
       const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': `Bearer ${token}`
         }
       });
       console.log('Order fetched:', response.data);
@@ -43,7 +43,7 @@ const StripeCheckoutForm = ({ orderId }) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
           }
         }
       );
@@ -74,6 +74,7 @@ StripeCheckoutForm.propTypes = {
 };
 
 export default StripeCheckoutForm;
+
 
 
 

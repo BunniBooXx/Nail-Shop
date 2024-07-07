@@ -20,7 +20,7 @@ const CartPage = () => {
             const response = await axios.get(`${backendUrl}/cart/read`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (response.data.cart_id) {
@@ -38,7 +38,7 @@ const CartPage = () => {
             await axios.delete(`${backendUrl}/cart/delete_all_items`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    'Authorization':  `Bearer ${token}`
                 }
             });
             setCartItems([]);
@@ -54,7 +54,7 @@ const CartPage = () => {
             await axios.put(`${backendUrl}/cart/update`, { itemId, quantity }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const updatedCartItems = cartItems.map(item => {
@@ -80,7 +80,7 @@ const CartPage = () => {
             await axios.delete(`${backendUrl}/cart/delete_item/${itemId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const updatedCartItems = cartItems.filter(item => item.product_id !== itemId);
@@ -103,7 +103,7 @@ const CartPage = () => {
             }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (response.data.success) {
