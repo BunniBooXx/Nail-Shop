@@ -25,43 +25,14 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     console.log('Backend URL:', backendUrl);
-  
+
     try {
-      const response = await fetch(`${backendUrl}/user/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: 'include',
-      });
-
-      console.log('Response:', response);
-      console.log('Status:', response.status);
-
-      if (response.ok) {
-        const data = await response.json();
-        const accessToken = `Bearer ${data.access_token}`;
-        console.log('Access Token:', accessToken);
-        console.log('Response Data:', data);
-
-        if (data.access_token) {
-          console.log('Login successful');
-          setMessage('Login successful');
-          localStorage.setItem('token', accessToken);
-          console.log('Token set in localStorage:', localStorage.getItem('token'));
-          await login(formData.username, formData.password);
-          navigate('/shop');
-        } else {
-          console.error('Access token not found');
-          setMessage('Invalid credentials');
-        }
-      } else {
-        console.error('Invalid credentials:', response.status);
-        setMessage('Invalid credentials');
-      }
+      console.log('Attempting login with:', formData); // Debugging step
+      await login(formData.username, formData.password);
+      setMessage('Login successful');
+      navigate('/shop');
     } catch (error) {
       console.error('Error in login request:', error);
       setMessage('Network error');
@@ -102,6 +73,12 @@ const Login = () => {
 }
 
 export default Login;
+
+
+
+
+ 
+
 
 
 
