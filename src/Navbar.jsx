@@ -41,12 +41,13 @@ const Navbar = () => {
           'Authorization': token,
         },
       });
-      const data = await response.json();
+
       if (response.ok) {
+        const data = await response.json();
         const avatarImagPath = data.avatar_image ? `/${data.avatar_image}` : defaultAvatarImage;
         setAvatarImage(avatarImagPath);
       } else {
-        console.error('Failed to fetch user data:', data.message);
+        console.error('Failed to fetch user data:', await response.json());
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -108,5 +109,6 @@ const Navbar = () => {
 }
 
 export default Navbar;
+
 
 

@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
         setUserId(username);
         localStorage.setItem('userId', JSON.stringify(username));
       } else {
-        console.error('Login failed:', response.status);
+        console.error('Login failed:', await response.json());
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }) => {
         console.log('New access token:', newToken);
         localStorage.setItem('token', newToken);
       } else {
-        console.error('Failed to refresh token:', response.status);
+        console.error('Failed to refresh token:', await response.json());
       }
     } catch (error) {
       console.error('Error refreshing token:', error);
@@ -98,7 +98,7 @@ const AuthProvider = ({ children }) => {
           await fetchNewAccessToken();
           const newToken = localStorage.getItem('token');
           console.log('fetchUserId - New Token after refresh:', newToken);
-          const retryResponse = await fetch(`${backendUrl}/user/fetch/user`, {
+          const retryResponse = await fetch(`${backendUrl}/user/fetch/${userId}`, {
             method: 'GET',
             headers: {
               'Authorization': newToken,
@@ -113,7 +113,7 @@ const AuthProvider = ({ children }) => {
             console.error('Failed to fetch userId after token refresh:', retryResponse.status);
           }
         } else {
-          console.error('Failed to fetch userId:', response.status);
+          console.error('Failed to fetch userId:', await response.json());
         }
       } catch (error) {
         console.error('Error fetching userId:', error);
