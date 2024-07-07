@@ -71,7 +71,31 @@ const ProfileWithUserId = () => {
 
 const Checkout = () => {
   const { orderId } = useParams();
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState(null); 
+  const token = localStorage.getItem('token');
+
+  const initiateCheckout = useCallback(async () => {
+    try {
+      const response = await fetch(`${backendUrl}/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify({order_id: orderId}),
+
+      });
+
+      const session = await response.json();
+      if (session.error) {
+        console.error('Error creating checkout session:', session.error);
+      } else {
+        window.location.href = session.url;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }, [order]);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -80,8 +104,8 @@ const Checkout = () => {
         const response = await fetch(`${backendUrl}/order/read/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+            'Authorization': token
+          } 
         });
         const data = await response.json();
         setOrder(data);
@@ -91,9 +115,13 @@ const Checkout = () => {
     };
 
     fetchOrder();
-  }, [orderId]);
+  }, [orderId, token]);
 
-  console.log('Checkout component orderId:', orderId); // Add this log
+  useEffect(() => {
+    if (order) {
+      initiateCheckout();
+    }
+  }, [order, initiateCheckout]);
 
   return order ? (
     <StripeCheckoutForm

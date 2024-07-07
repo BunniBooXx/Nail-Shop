@@ -1,67 +1,70 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import CheckoutFormComponent from './CheckoutFormComponent';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+import CheckoutFormComponent from './CheckoutFormComponent';
+import axios from 'axios';
+
+const stripePromises = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
+
+
+
+
+console.log(stripePromises);
+
+console.log('Stripe Publishable Key:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
 
 const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  console.log('StripeCheckoutForm component orderId:', orderId); // Add this log
-
-  const fetchOrder = useCallback(async () => {
-    const token = localStorage.getItem('token');
-    try {
-      console.log('Fetching order with ID:', orderId);
-      const response = await axios.get(`${backendUrl}/order/read/${orderId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      console.log('Order fetched:', response.data);
-      setOrder(response.data);
-    } catch (error) {
-      console.error('Error fetching order:', error);
-    }
-  }, [orderId, backendUrl]);
-
   useEffect(() => {
+    const fetchOrder = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        });
+        setOrder(response.data);
+      } catch (error) {
+        console.error('Error fetching order:', error);
+      }
+    };
+
     if (orderId) {
       fetchOrder();
     }
-  }, [orderId, fetchOrder]);
+  }, [orderId, backendUrl]);
 
-  const handlePaymentSuccess = useCallback(async (paymentIntent) => {
+  const handlePaymentSuccess = async (paymentIntent) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(
-        `${backendUrl}/send-emails`,
-        { order_id: orderId },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-
-      if (response.status !== 200) {
+      const response = await fetch(`${backendUrl}/send-emails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token, // Include the user's authentication token
+        },
+        body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
+      });
+  
+      if (!response.ok) {
         throw new Error('Failed to send emails');
       }
-
+  
       console.log('Emails sent successfully');
     } catch (error) {
       console.error('Error sending emails:', error);
     }
-  }, [orderId, backendUrl]);
+  };
+  
 
   return (
-    <Elements stripe={stripePromise}>
+    <Elements stripe={stripePromises}>
       <CheckoutFormComponent
         orderId={orderId}
         order={order}
@@ -69,10 +72,6 @@ const StripeCheckoutForm = ({ orderId }) => {
       />
     </Elements>
   );
-};
-
-StripeCheckoutForm.propTypes = {
-  orderId: PropTypes.string.isRequired,
 };
 
 export default StripeCheckoutForm;

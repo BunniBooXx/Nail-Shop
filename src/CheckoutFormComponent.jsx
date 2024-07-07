@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 
 const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
   const stripe = useStripe();
@@ -9,8 +8,6 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
   const [paymentError, setPaymentError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
-  console.log('CheckoutFormComponent received orderId:', orderId);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,16 +27,12 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
       if (error) {
         setPaymentError(error.message);
       } else {
-        console.log('Creating checkout session with orderId:', orderId);
-
         const response = await axios.post(`${backendUrl}/create-checkout-session`, {
           order_id: orderId,
           amount: order.total_amount * 100, // Convert to cents
         });
 
         const { sessionId } = response.data; // Ensure this is 'sessionId'
-
-        console.log('Session ID received:', sessionId);
 
         const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(sessionId, {
           payment_method: paymentMethod.id,
@@ -50,7 +43,6 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
         } else {
           if (paymentIntent && paymentIntent.status === 'succeeded') {
             setPaymentSuccess(true);
-            console.log('Payment successful:', paymentIntent);
             await onPaymentSuccess(paymentIntent);
           }
         }
@@ -71,12 +63,6 @@ const CheckoutFormComponent = ({ order, orderId, onPaymentSuccess }) => {
       </button>
     </form>
   );
-};
-
-CheckoutFormComponent.propTypes = {
-  orderId: PropTypes.string.isRequired,
-  order: PropTypes.object.isRequired,
-  onPaymentSuccess: PropTypes.func.isRequired,
 };
 
 export default CheckoutFormComponent;
