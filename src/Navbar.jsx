@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import axios from 'axios';
+import { useAuth } from './useAuth';
 import defaultAvatarImage from './images/default-avatar-image.jpg';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Navbar = () => {
+  const { user, setUserData } = useAuth()
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
   const [avatarImage, setAvatarImage] = useState(defaultAvatarImage);
   const [userId, setUserId] = useState(null);
@@ -47,24 +49,22 @@ const Navbar = () => {
     }
   };
 
-  const fetchUserData = async (userId, token) => {
+  const fetchUserData = async () => {
     try {
-      const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
+      const response = await fetch(`${backendUrl}/user/fetch/${user.id}`, {
         headers: {
-          'Authorization': token,
+          Authorization: `Bearer ${user.accessToken}`,
         },
       });
-
+  
       if (response.ok) {
-        const data = await response.json();
-        const avatarImagePath = data.avatar_image ? `/${data.avatar_image}` : defaultAvatarImage;
-        setAvatarImage(avatarImagePath);
+        const userData = await response.json();
+        setUserData(userData);
       } else {
-        const errorText = await response.text();
-        console.error('Failed to fetch user data:', errorText);
+        throw new Error('Failed to fetch user data');
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Failed to fetch user data:', error);
     }
   };
 
