@@ -11,10 +11,10 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [avatar_image, setAvatar] = useState('');
-  const [message, setMessage] = useState('');
+  const [notification, setNotification] = useState({ type: '', message: '', show: false });
 
   useEffect(() => {
-    if (userId) { 
+    if (userId) {
       const fetchUser = async () => {
         try {
           const token = localStorage.getItem('token');
@@ -41,7 +41,7 @@ const Profile = () => {
           console.error('Error fetching user details:', error);
         }
       };
-    
+
       fetchUser();
     }
   }, [userId]);
@@ -62,6 +62,11 @@ const Profile = () => {
     setAvatar(e.target.value);
   };
 
+  const showNotification = (type, message) => {
+    setNotification({ type, message, show: true });
+    setTimeout(() => setNotification({ type: '', message: '', show: false }), 3000);
+  };
+
   const updateUser = async (updateType) => {
     try {
       const token = localStorage.getItem('token');
@@ -72,20 +77,20 @@ const Profile = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ 
-          [updateType]: updateType === 'avatar' ? avatar_image : updateType === 'username' ? username : updateType === 'password' ? password : email 
+        body: JSON.stringify({
+          [updateType]: updateType === 'avatar' ? avatar_image : updateType === 'username' ? username : updateType === 'password' ? password : email
         }),
       });
       const data = await response.json();
       console.log('Response:', data);
       if (response.ok) {
-        setMessage(`Successfully updated ${updateType}`);
+        showNotification('success', `Successfully updated ${updateType}`);
       } else {
-        setMessage(`Failed to update ${updateType}`);
+        showNotification('error', `Failed to update ${updateType}`);
       }
     } catch (error) {
       console.error('Error in updating:', error);
-      setMessage(`Error in updating ${updateType}`);
+      showNotification('error', `Error in updating ${updateType}`);
     }
   };
 
@@ -104,13 +109,13 @@ const Profile = () => {
       const data = await response.json();
       console.log('Response:', data);
       if (response.ok) {
-        setMessage('Username updated successfully');
+        showNotification('success', 'Username updated successfully');
       } else {
-        setMessage('Failed to update username');
+        showNotification('error', 'Failed to update username');
       }
     } catch (error) {
       console.error('Error in updating username:', error);
-      setMessage('Error in updating username');
+      showNotification('error', 'Error in updating username');
     }
   };
 
@@ -129,13 +134,13 @@ const Profile = () => {
       const data = await response.json();
       console.log('Response:', data);
       if (response.ok) {
-        setMessage('Password updated successfully');
+        showNotification('success', 'Password updated successfully');
       } else {
-        setMessage('Failed to update password');
+        showNotification('error', 'Failed to update password');
       }
     } catch (error) {
       console.error('Error in updating password:', error);
-      setMessage('Error in updating password');
+      showNotification('error', 'Error in updating password');
     }
   };
 
@@ -154,13 +159,13 @@ const Profile = () => {
       const data = await response.json();
       console.log('Response:', data);
       if (response.ok) {
-        setMessage('Email updated successfully');
+        showNotification('success', 'Email updated successfully');
       } else {
-        setMessage('Failed to update email');
+        showNotification('error', 'Failed to update email');
       }
     } catch (error) {
       console.error('Error in updating email:', error);
-      setMessage('Error in updating email');
+      showNotification('error', 'Error in updating email');
     }
   };
 
@@ -179,13 +184,13 @@ const Profile = () => {
       const data = await response.json();
       console.log('Response:', data);
       if (response.ok) {
-        setMessage('Avatar updated successfully');
+        showNotification('success', 'Avatar updated successfully');
       } else {
-        setMessage('Failed to update avatar');
+        showNotification('error', 'Failed to update avatar');
       }
     } catch (error) {
       console.error('Error in updating avatar:', error);
-      setMessage('Error in updating avatar');
+      showNotification('error', 'Error in updating avatar');
     }
   };
 
@@ -193,6 +198,9 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+      <div className={`notification ${notification.show ? 'show' : ''} ${notification.type}`}>
+        {notification.message}
+      </div>
       <div className="avatar-section">
         <h2 className="section-title">Choose Your Avatar</h2>
         <div className="avatar-selection">
@@ -257,11 +265,10 @@ const Profile = () => {
           <button onClick={updateEmail} className="button">Update Email</button>
         </div>
       </div>
-
-      {message && <div className="message">{message}</div>}
     </div>
   );
 }
 
 export default Profile;
+
 

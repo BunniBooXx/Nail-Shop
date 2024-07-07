@@ -92,7 +92,8 @@ const Checkout = () => {
 
     fetchOrder();
   }, [orderId]);
-  console.log(orderId)
+
+  console.log('Checkout component orderId:', orderId); // Add this log
 
   return order ? (
     <StripeCheckoutForm

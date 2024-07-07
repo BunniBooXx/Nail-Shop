@@ -64,6 +64,14 @@ const Navbar = () => {
     }
   };
 
+  const handleProfileUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    if (updatedUser.avatar_image) {
+      setAvatarImage(updatedUser.avatar_image);
+      console.log('Avatar image updated to:', updatedUser.avatar_image); // Debugging line
+    }
+  };
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -119,6 +127,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 

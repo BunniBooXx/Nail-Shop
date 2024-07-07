@@ -11,6 +11,8 @@ const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  console.log('StripeCheckoutForm component orderId:', orderId); // Add this log
+
   const fetchOrder = useCallback(async () => {
     const token = localStorage.getItem('token');
     try {
