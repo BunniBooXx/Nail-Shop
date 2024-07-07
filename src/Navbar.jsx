@@ -1,31 +1,45 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { AuthContext } from './AuthContext';
 import axios from 'axios';
 import defaultAvatarImage from './images/default-avatar-image.jpg';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Navbar = () => {
-  const { userId, logout } = useContext(AuthContext);
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
   const [avatarImage, setAvatarImage] = useState(defaultAvatarImage);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    setUserId(null);
+    navigate('/login');
+  };
 
   useEffect(() => {
-    fetchCart();
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
+    const storedUserId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    
+    console.log('storedUserId:', storedUserId); // Debugging line
 
-  const fetchCart = async () => {
+    if (storedUserId && token) {
+      const numericUserId = Number(storedUserId); // Ensure userId is converted to a number
+      console.log('numericUserId:', numericUserId); // Debugging line
+      setUserId(numericUserId);
+      fetchCart(token);
+      fetchUserData(numericUserId, token);
+    }
+  }, []);
+
+  const fetchCart = async (token) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await axios.get(`${backendUrl}/cart/read`, {
         headers: {
-          'Authorization': token
-        }
+          'Authorization': token,
+        },
       });
       setCartData(response.data);
     } catch (error) {
@@ -33,9 +47,8 @@ const Navbar = () => {
     }
   };
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (userId, token) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
         headers: {
           'Authorization': token,
@@ -44,10 +57,11 @@ const Navbar = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const avatarImagPath = data.avatar_image ? `/${data.avatar_image}` : defaultAvatarImage;
-        setAvatarImage(avatarImagPath);
+        const avatarImagePath = data.avatar_image ? `/${data.avatar_image}` : defaultAvatarImage;
+        setAvatarImage(avatarImagePath);
       } else {
-        console.error('Failed to fetch user data:', await response.json());
+        const errorText = await response.text();
+        console.error('Failed to fetch user data:', errorText);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -106,7 +120,7 @@ const Navbar = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Navbar;
 
