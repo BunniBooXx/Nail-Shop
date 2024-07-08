@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CartPage.css';
 
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [notification, setNotification] = useState({ message: '', type: '', visible: false });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,8 +45,10 @@ const CartPage = () => {
             });
             setCartItems([]);
             setTotalPrice(0);
+            showNotification('Cart cleared successfully', 'success');
         } catch (error) {
             console.error('Error clearing cart:', error);
+            showNotification('Error clearing cart', 'error');
         }
     };
 
@@ -66,8 +70,10 @@ const CartPage = () => {
             setCartItems(updatedCartItems);
             const updatedTotalPrice = updatedCartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
             setTotalPrice(updatedTotalPrice);
+            showNotification('Quantity updated successfully', 'success');
         } catch (error) {
             console.error('Error updating quantity:', error);
+            showNotification('Error updating quantity', 'error');
         }
     };
 
@@ -75,7 +81,8 @@ const CartPage = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('User not authenticated');
+                showNotification('Please log in to delete items from the cart', 'error');
+                return;
             }
             await axios.delete(`${backendUrl}/cart/delete_item/${itemId}`, {
                 headers: {
@@ -90,8 +97,10 @@ const CartPage = () => {
             setCartItems(updatedCartItems);
             const updatedTotalPrice = updatedCartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
             setTotalPrice(updatedTotalPrice);
+            showNotification('Item removed from cart', 'success');
         } catch (error) {
             console.error('Error deleting single item from cart:', error);
+            showNotification('Error deleting item from cart', 'error');
         }
     };
 
@@ -109,12 +118,22 @@ const CartPage = () => {
             if (response.data.success) {
                 // Redirect to the order page with the created order ID
                 navigate(`/order/${response.data.order_id}`);
+                showNotification('Order created successfully', 'success');
             } else {
                 console.error('Error creating preliminary order:', response.data.message);
+                showNotification('Error creating order', 'error');
             }
         } catch (error) {
             console.error('Error creating preliminary order:', error);
+            showNotification('Error creating order', 'error');
         }
+    };
+
+    const showNotification = (message, type) => {
+        setNotification({ message, type, visible: true });
+        setTimeout(() => {
+            setNotification({ ...notification, visible: false });
+        }, 3000);
     };
 
     return (
@@ -151,6 +170,12 @@ const CartPage = () => {
                 {/* Message about creation and shipping */}
                 <p className="shipping-info">Please note that creation and shipping may take 2+ weeks. You will be emailed the shipping link once your order is processed.</p>
             </div>
+            
+            {notification.visible && (
+                <div className={`notification ${notification.type}`}>
+                    {notification.message}
+                </div>
+            )}
 
             <div className="space">
                 <br/>
@@ -161,7 +186,6 @@ const CartPage = () => {
 }
 
 export default CartPage;
-
 
 
 

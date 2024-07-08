@@ -67,7 +67,7 @@ const Product = () => {
 
       const response = await axios.post(`${backendUrl}/cart/add_to_cart`, cartItem, {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
