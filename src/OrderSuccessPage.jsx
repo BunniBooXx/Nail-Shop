@@ -6,6 +6,8 @@ import './App.css'; // Ensure this is the correct path to your CSS file
 const OrderSuccessPage = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
@@ -15,12 +17,26 @@ const OrderSuccessPage = () => {
         const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
           }
         });
         setOrder(response.data);
-      } catch (error) {
-        console.error('Error fetching order details:', error);
+        setLoading(false);
+
+        // Send confirmation email
+        await axios.post(`${backendUrl}/send-emails`, 
+          { orderId: orderId },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+      } catch (err) {
+        console.error('Error fetching order details:', err);
+        setError('Failed to load order details. Please try again later.');
+        setLoading(false);
       }
     };
 
@@ -29,9 +45,17 @@ const OrderSuccessPage = () => {
     }
   }, [orderId, backendUrl]);
 
+  if (loading) {
+    return <p className="loading">Loading order details...</p>;
+  }
+
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
+
   return (
     <div className="container">
-      {order ? (
+      {order && (
         <div className="order-success">
           <div className="box">
             <h1>Order Success</h1>
@@ -49,8 +73,6 @@ const OrderSuccessPage = () => {
             <p className="intro">You will be getting a confirmation email. Keep in mind orders are handmade and take 2-3 weeks to fulfill. You will get an email with the shipment link when your order is shipped out.</p>
           </div>
         </div>
-      ) : (
-        <p className="loading">Loading order details...</p>
       )}
     </div>
   );
