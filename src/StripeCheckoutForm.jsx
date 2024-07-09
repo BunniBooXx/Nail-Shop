@@ -47,7 +47,7 @@ const StripeCheckoutForm = ({ orderId }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token, // Include the user's authentication token
+          'Authorization': `Bearer ${token}`, // Include the user's authentication token
         },
         body: JSON.stringify({ orderId: paymentIntent.metadata.orderId }),
       });
