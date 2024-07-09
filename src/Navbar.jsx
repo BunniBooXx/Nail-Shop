@@ -3,15 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import axios from 'axios';
 import { useAuth } from './useAuth';
-import defaultAvatarImage from './images/default-avatar-image.jpg';
+import defaultAvatarLoadingImage from './images/default-avatar-image.jpg';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const defaultAvatarImage = '/logo.jpg'; // This will refer to logo.jpg in the public folder
 
 const Navbar = () => {
   const { userId, logout } = useAuth();
   const [cartData, setCartData] = useState({ items: [], total_price: 0 });
   const [avatarImage, setAvatarImage] = useState(defaultAvatarImage);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,8 +22,11 @@ const Navbar = () => {
     console.log('storedUserId:', userId); // Debugging line
 
     if (userId && token) {
+      setIsLoading(true); // Start loading
       fetchCart(token);
       fetchUserData(userId, token);
+    } else {
+      setAvatarImage(defaultAvatarImage); // Show default image if not logged in
     }
   }, [userId]);
 
@@ -42,7 +47,7 @@ const Navbar = () => {
     try {
       const response = await fetch(`${backendUrl}/user/fetch/${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
 
@@ -61,6 +66,8 @@ const Navbar = () => {
       }
     } catch (error) {
       console.error('Failed to fetch user data:', error);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -81,10 +88,10 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              {avatarImage ? (
-                <img alt="User Avatar" src={avatarImage} />
+              {isLoading ? (
+                <img alt="Loading Avatar" src={defaultAvatarLoadingImage} />
               ) : (
-                <div>Loading...</div>
+                <img alt="User Avatar" src={avatarImage} />
               )}
             </div>
           </div>
