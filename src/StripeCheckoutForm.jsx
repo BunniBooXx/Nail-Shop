@@ -26,7 +26,7 @@ const StripeCheckoutForm = ({ orderId }) => {
         const response = await axios.get(`${backendUrl}/order/details/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
           }
         });
         setOrder(response.data);
