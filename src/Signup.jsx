@@ -13,7 +13,6 @@ const Signup = () => {
   });
 
   const [message, setMessage] = useState('');
-  const [notification, setNotification] = useState({ message: '', type: '', visible: false });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -37,28 +36,17 @@ const Signup = () => {
       if (response.status === 201) {
         console.log('Signup successful');
         setMessage('Signup successful');
-        showNotification('Signup successful', 'success');
       } else if (response.status === 409) {
         console.error('Signup failed:', data.message);
         setMessage(data.message);
-        showNotification(data.message, 'error');
       } else {
         console.error('Signup failed:', data.message);
         setMessage('Signup failed');
-        showNotification('Signup failed', 'error');
       }
     } catch (error) {
       console.error('Error in signup request:', error);
       setMessage('Network error');
-      showNotification('Network error', 'error');
     }
-  };
-
-  const showNotification = (message, type) => {
-    setNotification({ message, type, visible: true });
-    setTimeout(() => {
-      setNotification({ ...notification, visible: false });
-    }, 3000);
   };
 
   return (
@@ -88,12 +76,6 @@ const Signup = () => {
           <button className="signup-button"type="submit">Sign Up</button>
         </form>
       </div>
-      
-      {notification.visible && (
-        <div className={`notification ${notification.type}`}>
-          {notification.message}
-        </div>
-      )}
     </div>
   );
 };
