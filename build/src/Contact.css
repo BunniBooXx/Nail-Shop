@@ -1,0 +1,130 @@
+/* General styles for the contact container */
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-image: url("./images/paper_airplane.png");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Styles for the contact form */
+.contact-form {
+  max-width: 600px; /* Allow a wider form for larger screens */
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly less transparent background */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between form and contact info */
+}
+
+/* Styles for each contact item */
+.contact-item {
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly less transparent background */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 10px; /* Space between items */
+  width: 100%; /* Ensure it fits within the container */
+  max-width: 600px; /* Limit the width */
+}
+
+/* Input and text area styles */
+.input-label {
+  display: block; /* Ensure label is above the input */
+  margin-bottom: 5px;
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Submit button styles */
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff69b4;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #ff1493;
+}
+
+/* Styles for the social icons */
+.social-icons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons a {
+  margin: 0 10px;
+}
+
+.social-icon {
+  color: #ff69b4;
+  font-size: 24px;
+}
+
+.social-icon:hover {
+  color: #ff1493;
+}
+
+/* Popup message styles */
+.popup-message {
+  color: green;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .contact-form,
+  .contact-item {
+    max-width: 100%; /* Make form and items fit within the screen */
+    padding: 15px;
+  }
+
+  .input-field,
+  .textarea-field {
+    padding: 6px;
+  }
+
+  .submit-button {
+    padding: 8px;
+  }
+
+  .social-icon {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form,
+  .contact-item {
+    padding: 10px;
+  }
+
+  .submit-button {
+    padding: 6px;
+  }
+
+  .social-icon {
+    font-size: 18px;
+  }
+}
