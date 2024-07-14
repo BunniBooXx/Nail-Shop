@@ -25,7 +25,7 @@ const OrderSuccessPage = () => {
 
         // Send confirmation email
         await axios.post(`${backendUrl}/send-emails`, 
-          { orderId: orderId },
+          { order_id: orderId },
           {
             headers: {
               'Content-Type': 'application/json',
