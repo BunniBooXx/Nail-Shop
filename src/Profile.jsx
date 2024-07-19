@@ -7,6 +7,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const Profile = () => {
   const { userId } = useAuth(); // Retrieve userId from the authentication context
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -39,10 +40,14 @@ const Profile = () => {
           }
         } catch (error) {
           console.error('Error fetching user details:', error);
+        } finally {
+          setLoading(false);
         }
       };
 
       fetchUser();
+    } else {
+      setLoading(false);
     }
   }, [userId]);
 
@@ -194,7 +199,23 @@ const Profile = () => {
     }
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!userId) {
+    return (
+      <div className="auth-prompt-wrapper">
+        <div className="auth-prompt">
+          <h2>Please sign up or log in to access your profile</h2>
+          <div className="auth-links">
+            <a href="/signup" className="auth-link">Sign Up</a>
+            <a href="/login" className="auth-link">Log In</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="profile-container">
