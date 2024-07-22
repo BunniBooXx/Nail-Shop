@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import CheckoutFormComponent from './CheckoutFormComponent';
 import axios from 'axios';
 
-const stripePromise = loadStripe('pk_test_51OwSCeEBwfjW7s9fwT5GlYGVHY7f3YPeRxHEqbV8YJQN139JgZpuJjTgZIzoEmeds2FUi91q8TbSJVq1gxQbczmf00ht6oOGGU');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const StripeCheckoutForm = ({ orderId }) => {
   const [order, setOrder] = useState(null);
@@ -60,12 +60,13 @@ const StripeCheckoutForm = ({ orderId }) => {
   
   return (
     <Elements stripe={stripePromise}>
-      <CheckoutFormComponent
-        orderId={orderId}
-        order={order}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
-    </Elements>
+    <CheckoutFormComponent
+      orderId={orderId}
+      order={order}
+      onPaymentSuccess={handlePaymentSuccess}
+    />
+  </Elements>
+    
   );
 };
 
