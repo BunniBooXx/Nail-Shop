@@ -124,10 +124,11 @@ const Checkout = () => {
   }, [order, initiateCheckout]);
 
   return order ? (
-    <StripeCheckoutForm
-      orderId={orderId}
-      order={order}
-    />
+    //<StripeCheckoutForm
+    //  orderId={orderId}
+    //  order={order}
+   // />//
+   <p>redirecting to payment page</p>
   ) : null;
 };
 
