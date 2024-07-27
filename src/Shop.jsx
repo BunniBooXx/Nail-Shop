@@ -40,7 +40,6 @@ function Shop() {
   return (
     <div className="container">
       <div className="title">
-        <h1>Welcome to Our Cute Shop!</h1>
       </div>
       <div className="products">
         {products.map(product => (
@@ -52,3 +51,4 @@ function Shop() {
 }
 
 export default Shop;
+
