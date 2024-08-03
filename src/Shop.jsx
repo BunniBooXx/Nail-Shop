@@ -9,17 +9,12 @@ function Product({ product }) {
   const isSoldOut = product.quantity_available <= 0;
 
   return (
-    <div className={`product ${isSoldOut ? 'sold-out' : ''}`} key={product.id}>
+    <Link to={`/product/read/${product.id}`} className={`product ${isSoldOut ? 'sold-out' : ''}`}>
       {isSoldOut && <div className="sold-out-overlay">Sold Out</div>}
       <img src={product.image_url} alt={product.name} />
-      <br />
       <h2>{product.name}</h2>
-      <p>ID: {product.id}</p>
-      <br />
       <p className="price">${product.price}.00</p>
-      <br />
-      <Link to={`/product/read/${product.id}`} className="btn btn-secondary">View Item</Link>
-    </div>
+    </Link>
   );
 }
 
@@ -39,16 +34,18 @@ function Shop() {
 
   return (
     <div className="container">
-      <div className="title">
-      </div>
       <div className="products">
         {products.map(product => (
           <Product key={product.id} product={product} />
         ))}
+      </div>
+      <div className="scroll-down">
+        <span>&darr;</span> {/* Arrow down indicator */}
       </div>
     </div>
   );
 }
 
 export default Shop;
+
 

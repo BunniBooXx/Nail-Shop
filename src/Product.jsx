@@ -112,6 +112,7 @@ const Product = () => {
       </div>
       <div className="description">
         <p>{description}</p>
+        <p>Check out a video of the product here: <a href="https://www.tiktok.com/@bunnybubblenails" className="video-link">TikTok</a></p>
       </div>
       <div className="price">
         <p>${price}</p>

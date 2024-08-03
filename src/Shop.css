@@ -1,107 +1,110 @@
+/* Ensure container is scrollable */
 .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
-    border-radius: 15px;
-    background-color: #e8b2b2; /* Light gray background for the container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+  width: 100%;
+  max-width: 1200px; /* Adjusted for better fit */
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #e8b2b2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* For positioning scroll-down indicator */
+  overflow-y: auto; /* Enable vertical scrolling */
+  min-height: calc(100vh - 150px); /* Adjust height based on footer/header */
+}
+
+/* Product Grid Layout */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  justify-items: center;
+  margin-bottom: 60px; /* Space for footer */
+}
+
+/* Product Card Styles */
+.product {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+  max-width: 100%;
+  cursor: pointer; /* Makes card clickable */
+  height: 300px; /* Fixed height for consistent card sizes */
+  overflow: hidden; /* Ensures content doesn’t overflow */
+}
+
+.product img {
+  width: 100%;
+  height: 200px; /* Fixed height for images */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product h2 {
+  font-size: 1.2em;
+  color: #333;
+  margin: 10px 0;
+}
+
+.product p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.price {
+  font-size: 1.2em;
+  color: #e91e63;
+}
+
+/* Scroll Down Button */
+.scroll-down {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  display: none; /* Hidden by default */
+  transition: opacity 0.3s;
+}
+
+.scroll-down:hover {
+  background-color: #d81b60;
+}
+
+.scroll-down span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .title h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #333; /* Dark gray for the title */
+    font-size: 1.8em;
   }
-  
-  .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
+
   .product {
-    background-color: #fff; /* White background for each product card */
-    border: 1px solid #ddd; /* Light gray border */
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    position: relative;
+    padding: 10px;
+    height: auto; /* Allows for variable heights on small screens */
   }
-  
-  .product img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  .product h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin: 10px 0;
-  }
-  
-  .product p {
-    margin: 5px 0;
-    color: #666; /* Medium gray for the text */
-  }
-  
-  .price {
-    font-size: 1.2em;
-    color: #e91e63; /* A professional pink for the price */
-  }
-  
+
   .btn {
-    background-color: #e91e63; /* Pink for the button */
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    display: inline-block;
-    transition: background-color 0.2s;
+    padding: 8px 12px;
   }
-  
-  .btn:hover {
-    background-color: #d81b60; /* Darker pink on hover */
+
+  .scroll-down {
+    bottom: 10px;
+    right: 10px;
   }
-  
-  .product:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .sold-out-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(233, 30, 99, 0.8);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    border-radius: 10px;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .title h1 {
-      font-size: 1.8em;
-    }
-  
-    .product {
-      padding: 10px;
-    }
-  
-    .btn {
-      padding: 8px 12px;
-    }
-  }
-  
+}
+
+
+
