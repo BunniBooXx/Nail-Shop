@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.421bb7dd.css",
-    "main.js": "/static/js/main.fd3cc62f.js",
-    "static/media/paper_airplane.png": "/static/media/paper_airplane.195d937e72548ee24c81.png",
-    "static/media/sizing-guide.jpg": "/static/media/sizing-guide.6cb383144ae3a061cf2e.jpg",
-    "static/media/chibi_laptop.jpg": "/static/media/chibi_laptop.6442d90f0bb027e349a1.jpg",
-    "static/media/tan_chibi_laptop.jpg": "/static/media/tan_chibi_laptop.c618570945c2102fe77c.jpg",
-    "index.html": "/index.html",
-    "main.421bb7dd.css.map": "/static/css/main.421bb7dd.css.map",
-    "main.fd3cc62f.js.map": "/static/js/main.fd3cc62f.js.map"
+    "main.css": "/bunnybubblenails.com/static/css/main.26d79b78.css",
+    "main.js": "/bunnybubblenails.com/static/js/main.f6ba353c.js",
+    "static/media/paper_airplane.png": "/bunnybubblenails.com/static/media/paper_airplane.195d937e72548ee24c81.png",
+    "static/media/sizing-guide.jpg": "/bunnybubblenails.com/static/media/sizing-guide.6cb383144ae3a061cf2e.jpg",
+    "static/media/chibi_laptop.jpg": "/bunnybubblenails.com/static/media/chibi_laptop.6442d90f0bb027e349a1.jpg",
+    "static/media/tan_chibi_laptop.jpg": "/bunnybubblenails.com/static/media/tan_chibi_laptop.c618570945c2102fe77c.jpg",
+    "index.html": "/bunnybubblenails.com/index.html",
+    "main.26d79b78.css.map": "/bunnybubblenails.com/static/css/main.26d79b78.css.map",
+    "main.f6ba353c.js.map": "/bunnybubblenails.com/static/js/main.f6ba353c.js.map"
   },
   "entrypoints": [
-    "static/css/main.421bb7dd.css",
-    "static/js/main.fd3cc62f.js"
+    "static/css/main.26d79b78.css",
+    "static/js/main.f6ba353c.js"
   ]
 }
