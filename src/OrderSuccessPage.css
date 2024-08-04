@@ -1,108 +1,78 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-/* Reset some default browser styles */
-body, h1, p {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #fce4ec;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-}
-
+/* Container styles */
 .container {
-  max-width: 600px;
-  width: 100%;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.order-success {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  text-align: center;
+  background-color: #fdf2f6; /* Very light pink */
   padding: 20px;
-  background-color: #ffe3e3;
-  border-radius: 12px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  margin: auto;
 }
 
-.order-success .box {
+/* Order Success Box */
+.order-success {
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+/* Box styling */
+.box {
+  background-color: #e0bbf2; /* Light lavender/pastel blue */
+  border-radius: 10px;
   padding: 15px;
-  text-align: center;
+  margin: 10px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.order-success h1 {
-  font-size: 2.2rem;
-  color: #f0a8c0;
-  font-family: 'Pacifico', cursive;
+/* Headings and Text */
+h1 {
+  color: #ff9aa2; /* Soft baby pink */
+  font-size: 2em;
+  margin-bottom: 20px;
 }
 
-.order-success p {
-  font-size: 1.1rem;
-  color: #ed9cce;
-  line-height: 1.6;
+p {
+  font-size: 1.1em;
+  color: #333; /* Dark gray for readability */
 }
 
-.order-success .intro {
-  font-size: 1rem;
-  color: #555555;
-  line-height: 1.6;
+.intro {
+  font-style: italic;
+  color: #888; /* Gray for less emphasis */
 }
 
-.loading {
-  font-size: 1.2rem;
-  color: #e91e63;
-  text-align: center;
-  margin-top: 20px;
+/* Loading and error messages */
+.loading, .error {
+  font-size: 1.2em;
+  color: #ff9aa2; /* Soft baby pink */
+  margin: 20px 0;
 }
 
-button {
-  background-color: #e91e63;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-family: 'Poppins', sans-serif;
-}
-
-button:hover {
-  background-color: #d81b60;
-}
-
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .container {
+  .order-success {
     padding: 15px;
   }
 
-  .order-success h1 {
-    font-size: 1.8rem;
+  h1 {
+    font-size: 1.5em;
   }
 
-  .order-success p {
-    font-size: 1rem;
+  p {
+    font-size: 1em;
   }
 
-  .order-success .intro {
-    font-size: 0.9rem;
+  .box {
+    padding: 10px;
   }
 }
+
+

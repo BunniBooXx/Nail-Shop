@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './App.css'; // Ensure this is the correct path to your CSS file
+import './OrderSuccessPage.css'; // Ensure this is the correct path to your CSS file
 
 const OrderSuccessPage = () => {
   const { orderId } = useParams();
