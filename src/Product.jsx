@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Product.css';
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import './Product.css';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -106,20 +108,24 @@ const Product = () => {
 
   return (
     <div className="product-container">
-      <h1>{name}</h1>
+      <h1 className="product-name">{name}</h1>
       <div className="image-carousel">
         <img src={`${product.image_url}`} alt={name} />
       </div>
       <div className="description">
         <p>{description}</p>
-        <p>Check out a video of the product here: <a href="https://www.tiktok.com/@bunnybubblenails" className="video-link">TikTok</a></p>
+        <p>Check out a video of the product here : <br/>
+          <a href="https://www.tiktok.com/@bunnybubblenails" className="video-link">
+            <FontAwesomeIcon icon={faHeart} /> Click Here
+          </a>
+        </p>
       </div>
       <div className="price">
         <p>${price}</p>
       </div>
       <div className="quantity">
         <label htmlFor="quantity" className="quantity">Quantity:</label>
-        <input
+        <input className='numbers'
           type="number"
           id="quantity"
           name="quantity"
@@ -130,8 +136,10 @@ const Product = () => {
       </div>
       <label className="nailsizes">
         Nail Size Option:
+        <br/>
+        <br/>
         <select value={nailSizeOption} onChange={(e) => setNailSizeOption(e.target.value)}>
-          <option value="">Select an option</option>
+          <option className= "options"value="">Select an option</option>
           <option value="1">XS</option>
           <option value="2">M</option>
           <option value="3">L</option>
@@ -141,7 +149,7 @@ const Product = () => {
 
       {nailSizeOption === '4' && (
         <div>
-          <label>
+          <label className='left-hand'>
             Left Hand Custom Size:
             <input
               type="text"
@@ -150,7 +158,7 @@ const Product = () => {
               placeholder="Thumb: 11mm, Index: 9mm, Middle: 10mm, Ring Finger: 10mm, Pinky: 8mm"
             />
           </label>
-          <label>
+          <label className="right-hand">
             Right Hand Custom Size:
             <input
               type="text"
@@ -171,6 +179,7 @@ const Product = () => {
       )}
 
       <div>
+        <br/>
         <p>Don't see your size? Check out our <a href="/sizing-guide" className="size-link">Size Guide</a>.</p>
       </div>
     </div>

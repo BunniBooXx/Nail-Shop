@@ -1,33 +1,77 @@
-/* Shop.css */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
-/* Adjust card styles for DaisyUI integration */
+/* Container styling */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Flexbox layout for cards */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Space between cards */
+  justify-content: center;
+}
+
+/* Card styling */
 .card {
+  background-color: #ffffff; /* White background for cards */
+  border-radius: 12px; /* Rounded corners for a soft look */
+  width: 180px; /* Smaller width for cards */
+  height: 240px; /* Smaller height for cards */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
 }
 
-.sold-out-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Card image styling */
+.card img {
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay for sold out */
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  z-index: 10;
+  height: 140px; /* Adjusted height for image */
+  object-fit: cover;
+  border-bottom: 2px solid #f0f0f0; /* Light border between image and text */
+  border-radius: 12px 12px 0 0; /* Rounded corners at the top */
 }
 
-.fixed {
-  position: fixed;
+/* Card body styling */
+.card-body {
+  padding: 10px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.7); /* Translucent white background */
+  border-radius: 0 0 12px 12px; /* Rounded corners at the bottom */
 }
 
-.text-primary {
-  color: #e91e63; /* Primary color from DaisyUI or your theme */
+/* Card title styling */
+.card-title {
+  margin: 0;
+  font-size: 1em; /* Smaller font size */
+  font-weight: 400; /* Normal weight for a handwritten look */
+  color: lightpink;
+  font-family: 'Great Vibes', cursive;
+  text-transform: capitalize; /* Capitalize first letter */
 }
 
+/* Hover effect for cards */
+.card:hover {
+  transform: scale(1.05); /* Slightly scale up on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
 
-
+/* Responsive typography and card size */
+@media (max-width: 768px) {
+  .card {
+    width: 160px; /* Smaller width for mobile */
+    height: 220px; /* Adjusted height for mobile */
+  }
+  .card-title {
+    font-size: 0.9em; /* Smaller font size for mobile */
+  }
+}
